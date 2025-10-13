@@ -77,7 +77,7 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
         toast.info(notification.title, toastConfig)
         break
     }
-  }, [])
+  }, [removeNotification])
 
   const removeNotification = useCallback((id: string) => {
     setNotifications(prev => prev.filter(n => n.id !== id))

@@ -24,7 +24,8 @@ const ModernInput = React.forwardRef<HTMLInputElement, ModernInputProps>(
     id,
     ...props
   }, ref) => {
-    const inputId = id || `input-${React.useId()}`
+    const generatedId = React.useId()
+    const inputId = id || `input-${generatedId}`
 
     const variantStyles = {
       default: "border-2 border-gray-300 bg-white focus:border-black focus:ring-4 focus:ring-black/10",

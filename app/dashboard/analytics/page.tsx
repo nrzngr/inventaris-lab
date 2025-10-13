@@ -115,7 +115,7 @@ export default function AnalyticsPage() {
         `)
         .gte('borrow_date', startDate)
 
-      const borrowerCounts = transactionData?.reduce((acc: any, transaction: any) => {
+      const borrowerCounts = transactionData?.reduce((acc: Record<string, TopBorrower>, transaction: { users?: { full_name?: string; email?: string; role?: string } }) => {
         const userName = transaction.users?.full_name || 'Tidak Diketahui'
         const userEmail = transaction.users?.email || 'tidakdiketahui@example.com'
 
@@ -140,7 +140,7 @@ export default function AnalyticsPage() {
         `)
         .gte('borrow_date', startDate)
 
-      const equipmentCounts = equipmentTransactionData?.reduce((acc: any, transaction: any) => {
+      const equipmentCounts = equipmentTransactionData?.reduce((acc: Record<string, PopularEquipment>, transaction: { equipment?: { name?: string; categories?: { name?: string } } }) => {
         const equipmentName = transaction.equipment?.name || 'Peralatan Tidak Diketahui'
         const categoryName = transaction.equipment?.categories?.name || 'Umum'
 

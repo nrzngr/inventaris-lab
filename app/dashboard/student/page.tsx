@@ -68,7 +68,7 @@ export default function StudentDashboard() {
           // Calculate favorite category
           const categoryCount: Record<string, number> = {}
           transactionData.forEach(t => {
-            const categoryName = (t.equipment as any)?.categories?.name || 'Uncategorized'
+            const categoryName = (t.equipment as { categories?: { name?: string } })?.categories?.name || 'Uncategorized'
             categoryCount[categoryName] = (categoryCount[categoryName] || 0) + 1
           })
 
@@ -87,7 +87,7 @@ export default function StudentDashboard() {
         // Fetch recent transactions (last 5)
         const recentData = transactionData?.slice(0, 5).map(t => ({
           id: t.id,
-          equipment_name: (t.equipment as any)?.name || 'Unknown Equipment',
+          equipment_name: (t.equipment as { name?: string })?.name || 'Unknown Equipment',
           borrow_date: t.borrow_date,
           expected_return_date: t.expected_return_date,
           actual_return_date: t.actual_return_date,
@@ -107,7 +107,7 @@ export default function StudentDashboard() {
           const equipment = availableData.map(item => ({
             id: item.id,
             name: item.name,
-            category: (item.categories as any)?.name || 'Uncategorized',
+            category: (item.categories as { name?: string })?.name || 'Uncategorized',
             image_url: item.image_url
           }))
           setAvailableEquipment(equipment)

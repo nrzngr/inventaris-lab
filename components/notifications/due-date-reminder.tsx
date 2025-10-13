@@ -50,7 +50,7 @@ export function DueDateReminder() {
 
         return {
           id: transaction.id,
-          equipment_name: (transaction.equipment as any)?.name || 'Unknown Equipment',
+          equipment_name: (transaction.equipment as { name?: string })?.name || 'Unknown Equipment',
           due_date: transaction.expected_return_date,
           days_until_due: daysUntilDue,
           is_overdue: daysUntilDue < 0

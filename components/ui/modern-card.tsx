@@ -83,7 +83,7 @@ export const ModernCardHeader = React.forwardRef<HTMLDivElement, CardHeaderProps
 
 ModernCardHeader.displayName = "ModernCardHeader"
 
-interface CardContentProps extends React.HTMLAttributes<HTMLDivElement> {}
+type CardContentProps = React.HTMLAttributes<HTMLDivElement>
 
 export const ModernCardContent = React.forwardRef<HTMLDivElement, CardContentProps>(
   ({ className, ...props }, ref) => (
@@ -93,7 +93,7 @@ export const ModernCardContent = React.forwardRef<HTMLDivElement, CardContentPro
 
 ModernCardContent.displayName = "ModernCardContent"
 
-interface CardFooterProps extends React.HTMLAttributes<HTMLDivElement> {}
+type CardFooterProps = React.HTMLAttributes<HTMLDivElement>
 
 export const ModernCardFooter = React.forwardRef<HTMLDivElement, CardFooterProps>(
   ({ className, ...props }, ref) => (
