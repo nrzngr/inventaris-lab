@@ -1,161 +1,173 @@
-# Sistem Manajemen Inventaris Alat Laboratorium
+# Laboratory Equipment Inventory Management System
 
-Sistem manajemen inventaris alat laboratorium yang komprehensif, dibangun dengan Next.js, TypeScript, Supabase, dan komponen shadcn/ui. Sistem ini mengotomatiskan pelacakan peralatan, proses peminjaman/pengembalian, dan pelaporan untuk lembaga pendidikan.
+A comprehensive laboratory equipment inventory management system built with Next.js, TypeScript, Supabase, and shadcn/ui components. This system automates equipment tracking, borrowing/returning processes, and reporting for educational institutions.
 
-## Fitur
+## Features
 
-- **Manajemen Peralatan**: Operasi CRUD penuh untuk peralatan laboratorium.
-- **Manajemen Pengguna**: Kontrol akses berbasis peran (admin, staf lab, dosen, mahasiswa).
-- **Sistem Peminjaman**: Permintaan peminjaman peralatan dengan alur kerja persetujuan.
-- **Dashboard Real-time**: Statistik dan aktivitas terkini.
-- **Desain Responsif**: Berfungsi di desktop dan perangkat mobile.
-- **UI Modern**: Dibangun dengan komponen shadcn/ui dan Tailwind CSS.
+- **Equipment Management**: Full CRUD operations for laboratory equipment
+- **User Management**: Role-based access control (admin, lab staff, lecturer, student)
+- **Borrowing System**: Equipment borrowing request with approval workflow
+- **Real-time Dashboard**: Statistics and recent activities
+- **Responsive Design**: Works on desktop and mobile devices
+- **Modern UI**: Built with shadcn/ui components and Tailwind CSS
 
-## Stack Teknologi
+## Technology Stack
 
-- **Frontend**: Next.js 14 dengan App Router
-- **Komponen UI**: shadcn/ui
+- **Frontend**: Next.js 14 with App Router
+- **UI Components**: shadcn/ui
 - **Backend**: Next.js API Routes
 - **Database**: Supabase (PostgreSQL)
-- **Autentikasi**: Supabase Auth
+- **Authentication**: Supabase Auth
 - **Styling**: Tailwind CSS
-- **Penanganan Formulir**: React Hook Form dengan validasi Zod
-- **Manajemen State**: Zustand
-- **Pengambilan Data**: TanStack Query (React Query)
+- **Form Handling**: React Hook Form with Zod validation
+- **State Management**: Zustand
+- **Data Fetching**: TanStack Query (React Query)
 
-## Memulai
+## Getting Started
 
-### Prasyarat
+### Prerequisites
 
-- Node.js 18+ terinstal
-- Akun dan proyek Supabase
+- Node.js 18+ installed
+- A Supabase account and project
 
-### Instalasi
+### Installation
 
-1.  **Kloning repositori**
-    ```bash
-    git clone <repository-url>
-    cd lab-inventory-system
-    ```
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd lab-inventory-system
+   ```
 
-2.  **Instal dependensi**
-    ```bash
-    npm install
-    ```
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
 
-3.  **Siapkan Supabase**
+3. **Set up Supabase**
 
-    a. Buat proyek Supabase baru di [supabase.com](https://supabase.com)
+   a. Create a new Supabase project at [supabase.com](https://supabase.com)
 
-    b. Jalankan skema database:
-    ```sql
-    -- Salin dan eksekusi isi dari database/schema.sql di editor SQL Supabase Anda
-    ```
+   b. Run the database schema:
+   ```sql
+   -- Copy and execute the contents of database/schema.sql in your Supabase SQL editor
+   ```
 
-    c. Dapatkan URL Supabase dan kunci anon (anon key) dari dashboard Supabase
+   c. Get your Supabase URL and anon key from the Supabase dashboard
 
-4.  **Variabel Lingkungan**
+4. **Environment variables**
 
-    Buat file `.env.local` di direktori utama:
-    ```env
-    NEXT_PUBLIC_SUPABASE_URL=url_supabase_anda_di_sini
-    NEXT_PUBLIC_SUPABASE_ANON_KEY=kunci_anon_supabase_anda_di_sini
-    DATABASE_URL=url_database_anda_di_sini
-    ```
+   Create a `.env.local` file in the root directory:
+   ```env
+   NEXT_PUBLIC_SUPABASE_URL=your_supabase_url_here
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key_here
+   DATABASE_URL=your_database_url_here
+   ```
 
-5.  **Jalankan server pengembangan**
-    ```bash
-    npm run dev
-    ```
+5. **Run the development server**
+   ```bash
+   npm run dev
+   ```
 
-6.  **Buka browser Anda**
+6. **Open your browser**
 
-    Navigasi ke [http://localhost:3000](http://localhost:3000)
+   Navigate to [http://localhost:3000](http://localhost:3000)
 
-## Skema Database
+## Database Schema
 
-Sistem ini menggunakan tabel utama berikut:
+The system uses the following main tables:
 
-- `categories` - Kategori peralatan
-- `equipment` - Item peralatan laboratorium
-- `user_profiles` - Informasi dan peran pengguna
-- `borrowing_transactions` - Catatan peminjaman peralatan
-- `maintenance_records` - Log pemeliharaan peralatan
+- `categories` - Equipment categories
+- `equipment` - Laboratory equipment items
+- `user_profiles` - User information and roles
+- `borrowing_transactions` - Equipment borrowing records
+- `maintenance_records` - Equipment maintenance logs
 
-Lihat `database/schema.sql` untuk definisi skema lengkapnya.
+See `database/schema.sql` for the complete schema definition.
 
-## Peran Pengguna
+## User Roles
 
-- **Admin**: Akses penuh ke semua fitur dan manajemen pengguna.
-- **Staf Lab**: Dapat mengelola peralatan dan menyetujui permintaan peminjaman.
-- **Dosen**: Dapat meminjam peralatan dan melihat laporan.
-- **Mahasiswa**: Dapat meminjam peralatan dan melihat item yang tersedia.
+- **Admin**: Full access to all features and user management
+- **Lab Staff**: Can manage equipment and approve borrowing requests
+- **Lecturer**: Can borrow equipment and view reports
+- **Student**: Can borrow equipment and view available items
 
-## Penggunaan
+## Usage
 
-### Untuk Admin
+### For Admins
 
-1.  Daftarkan akun dengan peran admin.
-2.  Siapkan kategori peralatan.
-3.  Tambahkan peralatan laboratorium.
-4.  Kelola akun pengguna.
-5.  Pantau aktivitas peminjaman.
+1. Register an account with the admin role
+2. Set up equipment categories
+3. Add laboratory equipment
+4. Manage user accounts
+5. Monitor borrowing activities
 
-### Untuk Staf Lab
+### For Lab Staff
 
-1.  Daftarkan akun dengan peran staf_lab.
-2.  Tambahkan dan kelola peralatan.
-3.  Setujui permintaan peminjaman.
-4.  Lacak pemeliharaan peralatan.
+1. Register an account with the lab_staff role
+2. Add and manage equipment
+3. Approve borrowing requests
+4. Track equipment maintenance
 
-### Untuk Mahasiswa dan Dosen
+### For Students and Lecturers
 
-1.  Daftarkan akun dengan peran yang sesuai.
-2.  Jelajahi peralatan yang tersedia.
-3.  Ajukan permintaan peminjaman.
-4.  Kembalikan peralatan tepat waktu.
+1. Register an account with the appropriate role
+2. Browse available equipment
+3. Submit borrowing requests
+4. Return equipment on time
 
-## Struktur Proyek
+## Project Structure
 
 ```
 lab-inventory-system/
 ├── app/
-│   ├── (auth)/           # Halaman autentikasi
-│   ├── (dashboard)/      # Halaman dashboard
-│   ├── api/             # Rute API
-│   ├── components/      # Komponen yang dapat digunakan kembali
-│   ├── lib/             # Utilitas dan konfigurasi
-│   └── globals.css      # Gaya global
+│   ├── (auth)/           # Authentication pages
+│   ├── (dashboard)/      # Dashboard pages
+│   ├── api/             # API routes
+│   ├── components/      # Reusable components
+│   ├── lib/             # Utilities and configurations
+│   └── globals.css      # Global styles
 ├── components/
-│   ├── ui/              # Komponen shadcn/ui
-│   ├── auth/            # Komponen autentikasi
-│   ├── equipment/       # Komponen manajemen peralatan
-│   └── ...              # Komponen fitur lainnya
+│   ├── ui/              # shadcn/ui components
+│   ├── auth/            # Authentication components
+│   ├── equipment/       # Equipment management components
+│   └── ...              # Other feature components
 ├── database/
-│   └── schema.sql       # Skema database
-└── public/              # Aset statis
+│   └── schema.sql       # Database schema
+└── public/              # Static assets
 ```
 
-## Status Saat Ini
+## Current Status
 
-✅ **Fitur yang Selesai:**
-- Penyiapan proyek Next.js dengan TypeScript
-- Konfigurasi Supabase dan skema database
-- Sistem autentikasi dengan akses berbasis peran
-- Operasi CRUD manajemen peralatan
-- Integrasi komponen shadcn/ui
-- Dasar desain responsif
+✅ **Completed Features:**
+- Next.js project setup with TypeScript
+- Supabase configuration and database schema
+- Authentication system with role-based access
+- Equipment management CRUD operations
+- shadcn/ui components integration
+- Responsive design foundation
 
-🚧 **Sedang Dikerjakan:**
-- Sistem transaksi peminjaman
-- Dashboard lanjutan dengan statistik
-- Antarmuka manajemen pengguna
-- Fungsionalitas pelaporan
+🚧 **In Progress:**
+- Borrowing transactions system
+- Advanced dashboard with statistics
+- User management interface
+- Reporting functionality
 
-## Lisensi
+## Contributing
 
-Proyek ini dilisensikan di bawah Lisensi MIT.
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Test thoroughly
+5. Submit a pull request
+
+## License
+
+This project is licensed under the MIT License.
+
+## Support
+
+For support and questions, please open an issue in the repository.
 
 ---
 
-**Catatan**: Ini adalah sistem manajemen inventaris laboratorium yang komprehensif. Pastikan untuk mengonfigurasi Supabase dengan benar dan menjalankan skema database sebelum menggunakan aplikasi.
+**Note**: This is a comprehensive laboratory inventory management system. Make sure to properly configure Supabase and run the database schema before using the application.

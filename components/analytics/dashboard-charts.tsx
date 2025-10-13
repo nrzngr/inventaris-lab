@@ -211,25 +211,33 @@ export function DashboardCharts() {
         </Alert>
       )}
 
-      {/* Header with time range selector */}
-      <div className="flex justify-between items-center">
-        <div className="flex items-center space-x-2">
-          <h3 className="text-lg font-semibold text-gray-900">Analytics Overview</h3>
-          {!loading && !error && equipmentStatusData.length > 0 && (
-            <Badge variant="outline" className="text-green-600">Live Data</Badge>
-          )}
+      {/* Header with time range selector - Responsive */}
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4 sm:gap-6">
+        {/* Title and badge */}
+        <div className="flex flex-col gap-2">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <h3 className="text-lg sm:text-xl font-semibold text-gray-900">Analytics Overview</h3>
+            {!loading && !error && equipmentStatusData.length > 0 && (
+              <Badge variant="outline" className="text-green-600 text-xs sm:text-sm">Live Data</Badge>
+            )}
+          </div>
+          <p className="text-sm sm:text-base text-gray-600 hidden sm:block">
+            Real-time equipment usage and performance metrics
+          </p>
         </div>
-        <div className="flex items-center space-x-2">
+
+        {/* Controls - Responsive layout */}
+        <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 w-full sm:w-auto">
           <button
             onClick={() => fetchChartData()}
-            className="px-3 py-1 text-sm bg-gray-100 hover:bg-gray-200 rounded-md transition-colors"
+            className="px-4 py-2 text-sm bg-gray-100 hover:bg-gray-200 rounded-md transition-colors disabled:opacity-50 w-full sm:w-auto order-2 sm:order-1"
             disabled={loading}
           >
-            Refresh
+            {loading ? 'Refreshing...' : 'Refresh'}
           </button>
           <Select value={timeRange} onValueChange={setTimeRange}>
-            <SelectTrigger className="w-40">
-              <SelectValue />
+            <SelectTrigger className="w-full sm:w-40 order-1 sm:order-2">
+              <SelectValue placeholder="Select time range" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="7days">Last 7 days</SelectItem>

@@ -69,8 +69,7 @@ export function UserForm({ user, onSuccess }: UserFormProps) {
 
     try {
       if (user) {
-        // Update existing user profile
-        const { error } = await supabase
+                const { error } = await supabase
           .from('user_profiles')
           .update({
             full_name: data.full_name,
@@ -98,19 +97,16 @@ export function UserForm({ user, onSuccess }: UserFormProps) {
     setError(null)
 
     try {
-      // Validate required fields based on role
-      if (data.role === 'student' && !data.nim) {
+            if (data.role === 'student' && !data.nim) {
         throw new Error('Student ID is required for students')
       }
       if (data.role === 'lecturer' && !data.nip) {
         throw new Error('Lecturer ID is required for lecturers')
       }
 
-      // Generate a secure temporary password
-      const tempPassword = 'TempPass123!' + Math.random().toString(36).slice(-8)
+            const tempPassword = 'TempPass123!' + Math.random().toString(36).slice(-8)
 
-      // Create auth user with metadata
-      const { data: authData, error: authError } = await supabase.auth.signUp({
+            const { data: authData, error: authError } = await supabase.auth.signUp({
         email: data.email,
         password: tempPassword,
         options: {
@@ -129,11 +125,9 @@ export function UserForm({ user, onSuccess }: UserFormProps) {
       }
 
       if (authData.user) {
-        // Wait a moment for the trigger to create the profile
-        await new Promise(resolve => setTimeout(resolve, 1000))
+                await new Promise(resolve => setTimeout(resolve, 1000))
 
-        // Check if profile was created automatically
-        const { data: existingProfile, error: checkError } = await supabase
+                const { data: existingProfile, error: checkError } = await supabase
           .from('user_profiles')
           .select('*')
           .eq('id', authData.user.id)
@@ -142,8 +136,7 @@ export function UserForm({ user, onSuccess }: UserFormProps) {
         if (checkError && checkError.code !== 'PGRST116') {
         }
 
-        // If profile wasn't created automatically, create it manually
-        if (!existingProfile) {
+                if (!existingProfile) {
           const profileData = {
             id: authData.user.id,
             full_name: data.fullName,
@@ -160,8 +153,7 @@ export function UserForm({ user, onSuccess }: UserFormProps) {
 
           if (profileError) {
 
-            // If profile creation fails, try to clean up the auth user
-            try {
+                        try {
               await supabase.auth.admin.deleteUser(authData.user.id)
             } catch {
             }
@@ -170,8 +162,7 @@ export function UserForm({ user, onSuccess }: UserFormProps) {
           }
         }
 
-        // Show success message with password info
-        setError(`User created successfully! Temporary password: ${tempPassword}`)
+                setError(`User created successfully! Temporary password: ${tempPassword}`)
 
         setTimeout(() => {
           onSuccess()
@@ -188,8 +179,7 @@ export function UserForm({ user, onSuccess }: UserFormProps) {
   }
 
   if (!user && createAuthUser) {
-    // New user creation form
-    return (
+        return (
       <form onSubmit={authForm.handleSubmit(onSubmitNewUser)} className="space-y-4">
         {error && (
           <Alert className={error.includes('successfully') ? "border-green-200 bg-green-50" : "border-red-200 bg-red-50"}>
@@ -299,8 +289,7 @@ export function UserForm({ user, onSuccess }: UserFormProps) {
     )
   }
 
-  // Edit existing user profile form
-  return (
+    return (
     <form onSubmit={handleSubmit(onSubmitProfile)} className="space-y-4">
       {error && (
         <Alert className="border-red-200 bg-red-50">
