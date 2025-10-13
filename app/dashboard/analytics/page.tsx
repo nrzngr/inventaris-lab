@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { DashboardLayout } from '@/components/layout/dashboard-layout'
 import { DashboardCharts } from '@/components/analytics/dashboard-charts'
@@ -45,11 +45,7 @@ export default function AnalyticsPage() {
     avgDuration: 0
   })
 
-  useEffect(() => {
-    fetchAnalyticsData()
-  }, [timeRange])
-
-  const fetchAnalyticsData = async () => {
+  const fetchAnalyticsData = useCallback(async () => {
     try {
       setLoading(true)
 
@@ -115,7 +111,7 @@ export default function AnalyticsPage() {
         `)
         .gte('borrow_date', startDate)
 
-      const borrowerCounts = transactionData?.reduce((acc: Record<string, TopBorrower>, transaction: { user_id: string; users: { full_name: string; email: string; role: string } }) => {
+      const borrowerCounts = transactionData?.reduce((acc: Record<string, TopBorrower>, transaction: any) => { // eslint-disable-line @typescript-eslint/no-explicit-any
         const userName = transaction.users?.full_name || 'Tidak Diketahui'
         const userEmail = transaction.users?.email || 'tidakdiketahui@example.com'
 
@@ -140,7 +136,7 @@ export default function AnalyticsPage() {
         `)
         .gte('borrow_date', startDate)
 
-      const equipmentCounts = equipmentTransactionData?.reduce((acc: Record<string, PopularEquipment>, transaction: { equipment_id: string; equipment: { name: string; categories: { name: string } } }) => {
+      const equipmentCounts = equipmentTransactionData?.reduce((acc: Record<string, PopularEquipment>, transaction: any) => { // eslint-disable-line @typescript-eslint/no-explicit-any
         const equipmentName = transaction.equipment?.name || 'Peralatan Tidak Diketahui'
         const categoryName = transaction.equipment?.categories?.name || 'Umum'
 
@@ -162,7 +158,11 @@ export default function AnalyticsPage() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [timeRange])
+
+  useEffect(() => {
+    fetchAnalyticsData()
+  }, [timeRange, fetchAnalyticsData])
 
   const exportData = () => {
     const csvContent = "data:text/csv;charset=utf-8,"
