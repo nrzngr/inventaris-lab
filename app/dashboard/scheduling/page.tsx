@@ -5,8 +5,9 @@ import { ModernCard, ModernCardHeader } from '@/components/ui/modern-card'
 import { ModernButton } from '@/components/ui/modern-button'
 import { Calendar, Clock } from 'lucide-react'
 import { useSearchParams, useRouter } from 'next/navigation'
+import { Suspense } from 'react'
 
-export default function SchedulingPage() {
+function SchedulingContent() {
   const searchParams = useSearchParams()
   const router = useRouter()
   const equipmentId = searchParams?.get('equipment')
@@ -62,5 +63,13 @@ export default function SchedulingPage() {
         </ModernCard>
       </div>
     </DashboardLayout>
+  )
+}
+
+export default function SchedulingPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <SchedulingContent />
+    </Suspense>
   )
 }
