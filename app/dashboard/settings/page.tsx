@@ -75,7 +75,7 @@ export default function SettingsPage() {
   if (user?.role !== 'admin') {
     return (
       <DashboardLayout>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8 page-gradient min-h-screen">
+        <div className="w-full px-4 sm:px-6 lg:px-8 py-4 sm:py-8 page-gradient min-h-screen">
           <ModernCard variant="default" className="text-center py-16">
             <div className="p-4 bg-red-100 rounded-full w-20 h-20 mx-auto mb-6">
               <Shield className="w-12 h-12 text-red-600 mx-auto" />
@@ -94,7 +94,7 @@ export default function SettingsPage() {
   if (loading) {
     return (
       <DashboardLayout>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8 page-gradient min-h-screen">
+        <div className="w-full px-4 sm:px-6 lg:px-8 py-4 sm:py-8 page-gradient min-h-screen">
           <div className="flex items-center justify-center min-h-screen">
             <ModernCard variant="default" className="text-center py-12">
               <div className="animate-spin w-8 h-8 border-4 border-black border-t-transparent rounded-full mx-auto mb-4"></div>
@@ -108,7 +108,7 @@ export default function SettingsPage() {
 
   return (
     <DashboardLayout>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8 page-gradient min-h-screen">
+      <div className="w-full px-4 sm:px-6 lg:px-8 py-4 sm:py-8 page-gradient min-h-screen">
         {/* Enhanced Page Header */}
         <ModernCard variant="elevated" padding="lg" className="mb-6 sm:mb-8 fade-in">
           <div className="flex items-center gap-3 sm:gap-4">

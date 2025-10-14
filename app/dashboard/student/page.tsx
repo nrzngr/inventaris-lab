@@ -193,7 +193,7 @@ export default function StudentDashboard() {
 
   return (
     <DashboardLayout>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8 page-gradient min-h-screen">
+      <div className="w-full px-4 sm:px-6 lg:px-8 py-4 sm:py-8 page-gradient min-h-screen">
         {/* Welcome Header */}
         <ModernCard variant="elevated" padding="lg" className="mb-6 sm:mb-8 fade-in">
           <div className="flex items-center gap-3 sm:gap-4">
