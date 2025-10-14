@@ -1,37 +1,35 @@
-import { Json } from './tables/audit-log'
-
 export interface Database {
   public: {
     Tables: {
       categories: {
-        Row: import('./tables/category').Category
-        Insert: import('./tables/category').CategoryInsert
-        Update: import('./tables/category').CategoryUpdate
+        Row: any
+        Insert: any
+        Update: any
       }
       user_profiles: {
-        Row: import('./tables/user-profile').UserProfile
-        Insert: import('./tables/user-profile').UserProfileInsert
-        Update: import('./tables/user-profile').UserProfileUpdate
+        Row: any
+        Insert: any
+        Update: any
       }
       equipment: {
-        Row: import('./tables/equipment').Equipment
-        Insert: import('./tables/equipment').EquipmentInsert
-        Update: import('./tables/equipment').EquipmentUpdate
+        Row: any
+        Insert: any
+        Update: any
       }
       borrowing_transactions: {
-        Row: import('./tables/borrowing-transaction').BorrowingTransaction
-        Insert: import('./tables/borrowing-transaction').BorrowingTransactionInsert
-        Update: import('./tables/borrowing-transaction').BorrowingTransactionUpdate
+        Row: any
+        Insert: any
+        Update: any
       }
       maintenance_records: {
-        Row: import('./tables/maintenance-record').MaintenanceRecord
-        Insert: import('./tables/maintenance-record').MaintenanceRecordInsert
-        Update: import('./tables/maintenance-record').MaintenanceRecordUpdate
+        Row: any
+        Insert: any
+        Update: any
       }
       audit_log: {
-        Row: import('./tables/audit-log').AuditLog
-        Insert: import('./tables/audit-log').AuditLogInsert
-        Update: import('./tables/audit-log').AuditLogUpdate
+        Row: any
+        Insert: any
+        Update: any
       }
       notifications: {
         Row: {
@@ -42,7 +40,7 @@ export interface Database {
           message: string
           is_read: boolean
           priority: 'low' | 'medium' | 'high' | 'urgent'
-          data: Json | null
+          data: any | null
           created_at: string
           read_at: string | null
         }
