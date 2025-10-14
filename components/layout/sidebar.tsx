@@ -19,7 +19,10 @@ import {
   LogOut,
   Menu,
   BarChart3,
-  Wrench
+  Wrench,
+  Calendar,
+  Camera,
+  Target
 } from 'lucide-react'
 
 interface NavItem {
@@ -41,6 +44,22 @@ const navItems: NavItem[] = [
     icon: Package,
   },
   {
+    title: 'Penjadwalan',
+    href: '/dashboard/scheduling',
+    icon: Calendar,
+    roles: ['admin', 'lab_staff', 'lecturer'],
+  },
+  {
+    title: 'Mobile Checkout',
+    href: '/dashboard/checkout',
+    icon: Camera,
+  },
+  {
+    title: 'QR Scanner',
+    href: '/dashboard/qr-scanner',
+    icon: Camera,
+  },
+  {
     title: 'Peminjaman Saya',
     href: '/dashboard/my-borrowings',
     icon: Activity,
@@ -56,6 +75,12 @@ const navItems: NavItem[] = [
     title: 'Pemeliharaan',
     href: '/dashboard/maintenance',
     icon: Wrench,
+    roles: ['admin', 'lab_staff'],
+  },
+  {
+    title: 'Kalibrasi',
+    href: '/dashboard/calibration',
+    icon: Target,
     roles: ['admin', 'lab_staff'],
   },
   {
@@ -95,7 +120,6 @@ export function Sidebar() {
     router.push('/')
   }
 
-  // Filter navigation items based on user role
   const filteredNavItems = navItems.filter(item => {
     if (!item.roles) return true
     return user?.role && item.roles.includes(user.role)

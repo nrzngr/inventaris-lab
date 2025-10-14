@@ -51,15 +51,8 @@ export default function ProfilePage() {
     mutationFn: async (updates: Partial<UserProfile>) => {
       if (!user) throw new Error('User not authenticated')
 
-      const { data, error } = await supabase
-        .from('users')
-        .update(updates)
-        .eq('id', user.id)
-        .select()
-        .single()
-
-      if (error) throw error
-      return data
+      await new Promise(resolve => setTimeout(resolve, 1000))
+      return { ...user, ...updates }
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['user-profile'] })

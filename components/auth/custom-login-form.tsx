@@ -2,14 +2,17 @@
 
 import { useState } from 'react'
 import { useCustomAuth } from './custom-auth-provider'
+import { useRouter } from 'next/navigation'
 import { ModernCard } from '@/components/ui/modern-card'
 import { ModernButton } from '@/components/ui/modern-button'
 import { ModernInput } from '@/components/ui/modern-input'
 import { ModernBadge } from '@/components/ui/modern-badge'
 import { Eye, EyeOff, Mail, Lock, AlertTriangle, CheckCircle } from 'lucide-react'
+import Link from 'next/link'
 
 export function CustomLoginForm() {
-  const { login, loading } = useCustomAuth()
+  const { login, loading, user } = useCustomAuth()
+  const router = useRouter()
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -25,7 +28,15 @@ export function CustomLoginForm() {
 
     try {
       const result = await login(formData.email, formData.password)
-      if (!result.success) {
+      if (result.success) {
+        setTimeout(() => {
+          if (user?.role === 'student') {
+            router.push('/dashboard/student')
+          } else {
+            router.push('/dashboard')
+          }
+        }, 500)
+      } else {
         setError(result.error || 'Login gagal')
       }
     } catch (error) {
@@ -46,11 +57,38 @@ export function CustomLoginForm() {
     }
   }
 
+  const getTempPassword = (email: string) => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem(`tempPassword_${email}`)
+    }
+    return null
+  }
+
   const demoAccounts = [
-    { email: 'admin@example.com', password: 'admin123', role: 'Admin', description: 'Akses penuh sistem' },
-    { email: 'student@example.com', password: 'student123', role: 'Student', description: 'Mahasiswa biasa' },
-    { email: 'lecturer@example.com', password: 'lecturer123', role: 'Lecturer', description: 'Dosen pengajar' },
-    { email: 'labstaff@example.com', password: 'labstaff123', role: 'Lab Staff', description: 'Staff laboratorium' }
+    {
+      email: 'admin@example.com',
+      password: getTempPassword('admin@example.com') || 'admin123',
+      role: 'Admin',
+      description: 'Akses penuh sistem'
+    },
+    {
+      email: 'student@example.com',
+      password: getTempPassword('student@example.com') || 'student123',
+      role: 'Student',
+      description: 'Mahasiswa biasa'
+    },
+    {
+      email: 'lecturer@example.com',
+      password: getTempPassword('lecturer@example.com') || 'lecturer123',
+      role: 'Lecturer',
+      description: 'Dosen pengajar'
+    },
+    {
+      email: 'labstaff@example.com',
+      password: getTempPassword('labstaff@example.com') || 'labstaff123',
+      role: 'Lab Staff',
+      description: 'Staff laboratorium'
+    }
   ]
 
   return (
@@ -131,6 +169,15 @@ export function CustomLoginForm() {
             >
               {isSubmitting ? 'Masuk...' : 'Masuk'}
             </ModernButton>
+
+            <div className="text-center">
+              <Link
+                href="/forgot-password"
+                className="text-sm text-blue-600 hover:text-blue-800 hover:underline transition-colors"
+              >
+                Lupa Password?
+              </Link>
+            </div>
           </form>
         </ModernCard>
 
@@ -139,6 +186,11 @@ export function CustomLoginForm() {
             <div className="text-center">
               <h3 className="font-bold text-lg mb-2">Akun Demo</h3>
               <p className="text-sm text-gray-600">Gunakan akun berikut untuk testing:</p>
+              <div className="mt-2 p-2 bg-yellow-50 border border-yellow-200 rounded">
+                <p className="text-xs text-yellow-800">
+                  💡 Mode Development - Login dengan demo account langsung tersedia
+                </p>
+              </div>
             </div>
 
             <div className="space-y-2">

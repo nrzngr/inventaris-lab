@@ -243,7 +243,7 @@ export default function EquipmentPage() {
               className="mb-4 sm:mb-6"
             />
             <div className="grid gap-3 sm:gap-4 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4">
-              {categories.slice(0, 8).map((category) => (
+              {categories?.slice(0, 8).map((category: any) => (
                 <ModernButton
                   key={category.id}
                   variant="outline"

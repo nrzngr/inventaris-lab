@@ -125,7 +125,7 @@ lab-inventory-system/
 │   ├── api/             # Rute API
 │   ├── components/      # Komponen yang dapat digunakan kembali
 │   ├── lib/             # Utilitas dan konfigurasi
-│   └── globals.css      # Global Style CSS
+│   └── globals.css      # Gaya global
 ├── components/
 │   ├── ui/              # Komponen shadcn/ui
 │   ├── auth/            # Komponen autentikasi

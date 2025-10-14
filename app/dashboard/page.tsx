@@ -55,7 +55,7 @@ export default function Dashboard() {
           .from('equipment')
           .select('status')
 
-        const equipmentStats = equipmentData?.reduce((acc, item) => {
+        const equipmentStats = equipmentData?.reduce((acc, item: any) => {
           acc[item.status] = (acc[item.status] || 0) + 1
           return acc
         }, {} as Record<string, number>) || {}
@@ -65,8 +65,8 @@ export default function Dashboard() {
           .from('borrowing_transactions')
           .select('status, expected_return_date, actual_return_date, user_id, equipment_id, borrow_date')
 
-        const activeBorrowings = transactionData?.filter(t => t.status === 'active').length || 0
-        const overdueBorrowings = transactionData?.filter(t =>
+        const activeBorrowings = transactionData?.filter((t: any) => t.status === 'active').length || 0
+        const overdueBorrowings = transactionData?.filter((t: any) =>
           t.status === 'active' &&
           new Date(t.expected_return_date) < new Date()
         ).length || 0
@@ -103,7 +103,7 @@ export default function Dashboard() {
           .order('created_at', { ascending: false })
           .limit(10)
 
-        const formattedActivity: RecentActivity[] = activityData?.map(activity => ({
+        const formattedActivity: RecentActivity[] = activityData?.map((activity: any) => ({
           id: activity.id,
           type: activity.actual_return_date ? 'return' : 'borrow',
           user_name: activity.user?.full_name || 'Tidak Diketahui',

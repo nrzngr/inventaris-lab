@@ -46,7 +46,6 @@ export function AdvancedSearch({ filters, onFiltersChange, categories }: Advance
   const [localFilters, setLocalFilters] = useState<AdvancedFilters>(filters)
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState(filters.searchTerm)
 
-  // Debounce search input
   useEffect(() => {
     const timer = setTimeout(() => {
       onFiltersChange({ ...filters, searchTerm: debouncedSearchTerm })
@@ -55,16 +54,15 @@ export function AdvancedSearch({ filters, onFiltersChange, categories }: Advance
     return () => clearTimeout(timer)
   }, [debouncedSearchTerm])
 
-  // Update local filters when props change
   useEffect(() => {
     setLocalFilters(filters)
   }, [filters])
 
   const hasActiveFilters = useMemo(() => {
     return (
-      filters.status ||
-      filters.categoryId ||
-      filters.condition ||
+      (filters.status && filters.status !== 'all') ||
+      (filters.categoryId && filters.categoryId !== 'all') ||
+      (filters.condition && filters.condition !== 'all') ||
       filters.location ||
       filters.minPrice ||
       filters.maxPrice ||
@@ -83,9 +81,9 @@ export function AdvancedSearch({ filters, onFiltersChange, categories }: Advance
   const handleAdvancedFilterReset = () => {
     const resetFilters: AdvancedFilters = {
       searchTerm: filters.searchTerm,
-      status: '',
-      categoryId: '',
-      condition: '',
+      status: 'all',
+      categoryId: 'all',
+      condition: 'all',
       location: '',
       minPrice: '',
       maxPrice: '',
@@ -102,9 +100,9 @@ export function AdvancedSearch({ filters, onFiltersChange, categories }: Advance
   const clearAllFilters = () => {
     const emptyFilters: AdvancedFilters = {
       searchTerm: '',
-      status: '',
-      categoryId: '',
-      condition: '',
+      status: 'all',
+      categoryId: 'all',
+      condition: 'all',
       location: '',
       minPrice: '',
       maxPrice: '',
@@ -120,9 +118,9 @@ export function AdvancedSearch({ filters, onFiltersChange, categories }: Advance
 
   const getActiveFiltersCount = () => {
     let count = 0
-    if (filters.status) count++
-    if (filters.categoryId) count++
-    if (filters.condition) count++
+    if (filters.status && filters.status !== 'all') count++
+    if (filters.categoryId && filters.categoryId !== 'all') count++
+    if (filters.condition && filters.condition !== 'all') count++
     if (filters.location) count++
     if (filters.minPrice) count++
     if (filters.maxPrice) count++
@@ -180,7 +178,7 @@ export function AdvancedSearch({ filters, onFiltersChange, categories }: Advance
                       <SelectValue placeholder="Select status" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">All Status</SelectItem>
+                      <SelectItem value="all">All Status</SelectItem>
                       <SelectItem value="available">Available</SelectItem>
                       <SelectItem value="borrowed">Borrowed</SelectItem>
                       <SelectItem value="maintenance">Maintenance</SelectItem>
@@ -199,7 +197,7 @@ export function AdvancedSearch({ filters, onFiltersChange, categories }: Advance
                       <SelectValue placeholder="Select condition" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">All Conditions</SelectItem>
+                      <SelectItem value="all">All Conditions</SelectItem>
                       <SelectItem value="excellent">Excellent</SelectItem>
                       <SelectItem value="good">Good</SelectItem>
                       <SelectItem value="fair">Fair</SelectItem>
@@ -221,7 +219,7 @@ export function AdvancedSearch({ filters, onFiltersChange, categories }: Advance
                       <SelectValue placeholder="Select category" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">All Categories</SelectItem>
+                      <SelectItem value="all">All Categories</SelectItem>
                       {categories.map((category) => (
                         <SelectItem key={category.id} value={category.id}>
                           {category.name}
@@ -352,30 +350,30 @@ export function AdvancedSearch({ filters, onFiltersChange, categories }: Advance
       {/* Active filters display */}
       {hasActiveFilters && (
         <div className="flex flex-wrap gap-2">
-          {filters.status && (
+          {filters.status && filters.status !== 'all' && (
             <Badge variant="secondary" className="gap-1">
               Status: {filters.status}
               <X
                 className="w-3 h-3 cursor-pointer"
-                onClick={() => onFiltersChange({ ...filters, status: '' })}
+                onClick={() => onFiltersChange({ ...filters, status: 'all' })}
               />
             </Badge>
           )}
-          {filters.categoryId && (
+          {filters.categoryId && filters.categoryId !== 'all' && (
             <Badge variant="secondary" className="gap-1">
               Category: {categories.find(c => c.id === filters.categoryId)?.name || filters.categoryId}
               <X
                 className="w-3 h-3 cursor-pointer"
-                onClick={() => onFiltersChange({ ...filters, categoryId: '' })}
+                onClick={() => onFiltersChange({ ...filters, categoryId: 'all' })}
               />
             </Badge>
           )}
-          {filters.condition && (
+          {filters.condition && filters.condition !== 'all' && (
             <Badge variant="secondary" className="gap-1">
               Condition: {filters.condition}
               <X
                 className="w-3 h-3 cursor-pointer"
-                onClick={() => onFiltersChange({ ...filters, condition: '' })}
+                onClick={() => onFiltersChange({ ...filters, condition: 'all' })}
               />
             </Badge>
           )}

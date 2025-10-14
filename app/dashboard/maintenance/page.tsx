@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { MaintenanceList } from '@/components/maintenance/maintenance-list'
+import { MaintenanceScheduler } from '@/components/maintenance/maintenance-scheduler'
 import { DashboardLayout } from '@/components/layout/dashboard-layout'
 import { ModernCard, ModernCardHeader } from '@/components/ui/modern-card'
 import { Wrench, Calendar, AlertTriangle, CheckCircle, Clock } from 'lucide-react'
@@ -35,27 +36,23 @@ export default function MaintenancePage() {
       const firstDayOfMonth = new Date()
       firstDayOfMonth.setDate(1)
 
-      // Get scheduled maintenance (upcoming)
       const { count: scheduledCount } = await supabase
         .from('maintenance_records')
         .select('*', { count: 'exact', head: true })
         .gte('maintenance_date', today)
         .lte('maintenance_date', sevenDaysFromNow.toISOString())
 
-      // Get in progress maintenance
       const { count: inProgressCount } = await supabase
         .from('maintenance_records')
         .select('*', { count: 'exact', head: true })
         .eq('status', 'in_progress')
 
-      // Get overdue maintenance
       const { count: overdueCount } = await supabase
         .from('maintenance_records')
         .select('*', { count: 'exact', head: true })
         .lt('maintenance_date', today)
         .neq('status', 'completed')
 
-      // Get completed maintenance this month
       const { count: completedCount } = await supabase
         .from('maintenance_records')
         .select('*', { count: 'exact', head: true })
@@ -245,9 +242,9 @@ export default function MaintenancePage() {
           </div>
         </div>
 
-        {/* Main Maintenance List */}
+        {/* Main Maintenance Content */}
         <div className="slide-up">
-          <MaintenanceList />
+          <MaintenanceScheduler />
         </div>
       </div>
     </DashboardLayout>

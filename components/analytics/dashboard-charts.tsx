@@ -66,7 +66,6 @@ export function DashboardCharts() {
       setLoading(true)
       setError(null)
 
-      // Fetch real data using direct Supabase calls
       const [equipmentResult, categoriesResult, transactionsResult, usersResult] = await Promise.allSettled([
         supabase.from('equipment').select('*'),
         supabase.from('categories').select('*'),
@@ -79,13 +78,11 @@ export function DashboardCharts() {
       const transactions = transactionsResult.status === 'fulfilled' ? transactionsResult.value.data || [] : []
       const users = usersResult.status === 'fulfilled' ? usersResult.value.data || [] : []
 
-      // Check if we have sufficient data
       if (equipmentData.length === 0 || categories.length === 0) {
         throw new Error('No equipment or categories data available')
       }
 
-      // Process equipment status data
-      const statusCounts = equipmentData.reduce((acc, item) => {
+      const statusCounts = equipmentData.reduce((acc, item: any) => {
         acc[item.status] = (acc[item.status] || 0) + 1
         return acc
       }, {} as Record<string, number>)
@@ -99,19 +96,17 @@ export function DashboardCharts() {
 
       setEquipmentStatusData(statusChartData)
 
-      // Process category data
-      const availableEquipment = equipmentData.filter(item => item.status === 'available')
-      const categoryCounts = categories.map(category => ({
+      const availableEquipment = equipmentData.filter((item: any) => item.status === 'available')
+      const categoryCounts = categories.map((category: any) => ({
         name: category.name,
-        count: availableEquipment.filter(item => item.category_id === category.id).length
-      })).filter(cat => cat.count > 0) // Only show categories with available equipment
+        count: availableEquipment.filter((item: any) => item.category_id === category.id).length
+      })).filter((cat: any) => cat.count > 0) // Only show categories with available equipment
 
       setCategoryData(categoryCounts.slice(0, 6).sort((a, b) => b.count - a.count))
 
-      // Process transaction data for line chart
       const days = timeRange === '7days' ? 7 : timeRange === '30days' ? 30 : 90
       const cutoffDate = new Date(Date.now() - days * 24 * 60 * 60 * 1000)
-      const recentTransactions = transactions.filter(t =>
+      const recentTransactions = transactions.filter((t: any) =>
         new Date(t.created_at) >= cutoffDate
       )
 
@@ -123,11 +118,11 @@ export function DashboardCharts() {
         date.setDate(date.getDate() - i)
         const dateStr = date.toISOString().split('T')[0]
 
-        const borrowings = recentTransactions.filter(t =>
+        const borrowings = recentTransactions.filter((t: any) =>
           t.created_at.startsWith(dateStr)
         ).length
 
-        const returns = recentTransactions.filter(t =>
+        const returns = recentTransactions.filter((t: any) =>
           t.actual_return_date && t.actual_return_date.startsWith(dateStr)
         ).length
 
@@ -140,25 +135,23 @@ export function DashboardCharts() {
 
       setTransactionData(processedTransactionData)
 
-      // Process user activity by month (only use real data)
       const monthlyData: UserActivityData[] = []
       for (let i = 5; i >= 0; i--) {
         const date = new Date()
         date.setMonth(date.getMonth() - i)
         const monthStr = date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' })
 
-        const newUsers = users.filter(u => {
+        const newUsers = users.filter((u: any) => {
           const userDate = new Date(u.created_at)
           return userDate.getMonth() === date.getMonth() && userDate.getFullYear() === date.getFullYear()
         }).length
 
-        // Calculate active users (users with transactions in the last month)
         const activeDate = new Date()
         activeDate.setMonth(activeDate.getMonth() - 1)
         const activeUsers = new Set(
           transactions
-            .filter(t => new Date(t.created_at) >= activeDate)
-            .map(t => t.user_id)
+            .filter((t: any) => new Date(t.created_at) >= activeDate)
+            .map((t: any) => t.user_id)
         ).size
 
         monthlyData.push({
@@ -173,7 +166,6 @@ export function DashboardCharts() {
     } catch (error) {
       setError(`Failed to load analytics data: ${error instanceof Error ? error.message : 'Unknown error'}`)
 
-      // Set empty data arrays - no mock data
       setEquipmentStatusData([])
       setCategoryData([])
       setTransactionData([])

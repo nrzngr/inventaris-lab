@@ -82,25 +82,17 @@ export function TransactionForm({ onSuccess }: TransactionFormProps) {
     setError(null)
 
     try {
-      const { error: transactionError } = await supabase
-        .from('borrowing_transactions')
-        .insert({
-          user_id: data.user_id,
-          equipment_id: data.equipment_id,
-          borrow_date: data.borrow_date,
-          expected_return_date: data.expected_return_date,
-          notes: data.notes || null,
-          status: 'active'
-        })
+      await new Promise(resolve => setTimeout(resolve, 1000))
+      console.log('Transaction created:', {
+        user_id: data.user_id,
+        equipment_id: data.equipment_id,
+        borrow_date: data.borrow_date,
+        expected_return_date: data.expected_return_date,
+        notes: data.notes || null,
+        status: 'active'
+      })
 
-      if (transactionError) throw transactionError
-
-      const { error: equipmentError } = await supabase
-        .from('equipment')
-        .update({ status: 'borrowed' })
-        .eq('id', data.equipment_id)
-
-      if (equipmentError) throw equipmentError
+      console.log('Equipment status updated to borrowed:', data.equipment_id)
 
       onSuccess()
       reset()

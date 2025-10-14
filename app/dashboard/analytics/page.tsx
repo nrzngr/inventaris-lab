@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { DashboardLayout } from '@/components/layout/dashboard-layout'
 import { DashboardCharts } from '@/components/analytics/dashboard-charts'
+import { RealtimeAnalytics } from '@/components/analytics/realtime-analytics'
 import { ModernCard, ModernCardHeader } from '@/components/ui/modern-card'
 import { ModernButton } from '@/components/ui/modern-button'
 import { ModernBadge } from '@/components/ui/modern-badge'
@@ -85,8 +86,8 @@ export default function AnalyticsPage() {
       let avgDuration = 0
       if (completedTransactions && completedTransactions.length > 0) {
         const durations = completedTransactions
-          .filter(t => t.actual_return_date)
-          .map(t => {
+          .filter((t: any) => t.actual_return_date)
+          .map((t: any) => {
             const start = new Date(t.borrow_date)
             const end = new Date(t.actual_return_date!)
             return Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24))
@@ -341,6 +342,9 @@ export default function AnalyticsPage() {
         </div>
 
         <div className="space-y-8 sm:space-y-12">
+          {/* Real-time Analytics Section */}
+          <RealtimeAnalytics />
+
           <ModernCard variant="default" className="overflow-hidden">
             <div className="p-4 sm:p-6 border-b border-black bg-gray-50">
               <div className="flex items-center gap-4">

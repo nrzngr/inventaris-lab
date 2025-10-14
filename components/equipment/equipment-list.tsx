@@ -13,6 +13,7 @@ import { TableSkeleton } from '@/components/ui/loading-skeleton'
 import { ModernCard, ModernCardHeader, ModernCardContent } from '@/components/ui/modern-card'
 import { ModernBadge } from '@/components/ui/modern-badge'
 import { ModernButton } from '@/components/ui/modern-button'
+import { TablePagination } from '@/components/ui/pagination'
 
 interface Equipment {
   id: string
@@ -67,6 +68,8 @@ export function EquipmentList() {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false)
   const [editingEquipment, setEditingEquipment] = useState<Equipment | null>(null)
   const [viewingEquipment, setViewingEquipment] = useState<Equipment | null>(null)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [pageSize] = useState(20)
 
   const queryClient = useQueryClient()
 
@@ -75,66 +78,76 @@ export function EquipmentList() {
     queryClient.invalidateQueries({ queryKey: ['categories'] })
   }, [queryClient])
 
-  const { data: equipment, isLoading, refetch } = useQuery({
-    queryKey: ['equipment', filters],
+  useEffect(() => {
+    setCurrentPage(1)
+  }, [filters])
+
+  const { data: equipmentData, isLoading, refetch } = useQuery({
+    queryKey: ['equipment', filters, currentPage, pageSize],
     queryFn: async () => {
+      let countQuery = supabase
+        .from('equipment')
+        .select('*', { count: 'exact', head: true })
+      if (filters.searchTerm) {
+        countQuery = countQuery.or(`name.ilike.%${filters.searchTerm}%,serial_number.ilike.%${filters.searchTerm}%,description.ilike.%${filters.searchTerm}%`)
+      }
+      if (filters.status) countQuery = countQuery.eq('status', filters.status)
+      if (filters.categoryId) countQuery = countQuery.eq('category_id', filters.categoryId)
+      if (filters.condition) countQuery = countQuery.eq('condition', filters.condition)
+      if (filters.location) countQuery = countQuery.ilike('location', `%${filters.location}%`)
+      if (filters.minPrice) countQuery = countQuery.gte('purchase_price', parseFloat(filters.minPrice))
+      if (filters.maxPrice) countQuery = countQuery.lte('purchase_price', parseFloat(filters.maxPrice))
+      if (filters.purchaseDateFrom) countQuery = countQuery.gte('purchase_date', filters.purchaseDateFrom)
+      if (filters.purchaseDateTo) countQuery = countQuery.lte('purchase_date', filters.purchaseDateTo)
+      if (filters.availableOnly) countQuery = countQuery.eq('status', 'available')
+      if (filters.inMaintenance) countQuery = countQuery.eq('status', 'maintenance')
+
+      const { count: totalCount, error: countError } = await countQuery
+      if (countError) throw countError
+
+      const from = (currentPage - 1) * pageSize
+      const to = from + pageSize - 1
+
       let query = supabase
         .from('equipment')
-        .select('*, categories(name)')
+        .select('*, categories(name)', { count: 'exact' })
         .order('created_at', { ascending: false })
+        .range(from, to)
 
       if (filters.searchTerm) {
         query = query.or(`name.ilike.%${filters.searchTerm}%,serial_number.ilike.%${filters.searchTerm}%,description.ilike.%${filters.searchTerm}%`)
       }
-
-      if (filters.status) {
-        query = query.eq('status', filters.status)
-      }
-
-      if (filters.categoryId) {
-        query = query.eq('category_id', filters.categoryId)
-      }
-
-      if (filters.condition) {
-        query = query.eq('condition', filters.condition)
-      }
-
-      if (filters.location) {
-        query = query.ilike('location', `%${filters.location}%`)
-      }
-
-      if (filters.minPrice) {
-        query = query.gte('purchase_price', parseFloat(filters.minPrice))
-      }
-      if (filters.maxPrice) {
-        query = query.lte('purchase_price', parseFloat(filters.maxPrice))
-      }
-
-      if (filters.purchaseDateFrom) {
-        query = query.gte('purchase_date', filters.purchaseDateFrom)
-      }
-      if (filters.purchaseDateTo) {
-        query = query.lte('purchase_date', filters.purchaseDateTo)
-      }
-
-      if (filters.availableOnly) {
-        query = query.eq('status', 'available')
-      }
-      if (filters.inMaintenance) {
-        query = query.eq('status', 'maintenance')
-      }
+      if (filters.status) query = query.eq('status', filters.status)
+      if (filters.categoryId) query = query.eq('category_id', filters.categoryId)
+      if (filters.condition) query = query.eq('condition', filters.condition)
+      if (filters.location) query = query.ilike('location', `%${filters.location}%`)
+      if (filters.minPrice) query = query.gte('purchase_price', parseFloat(filters.minPrice))
+      if (filters.maxPrice) query = query.lte('purchase_price', parseFloat(filters.maxPrice))
+      if (filters.purchaseDateFrom) query = query.gte('purchase_date', filters.purchaseDateFrom)
+      if (filters.purchaseDateTo) query = query.lte('purchase_date', filters.purchaseDateTo)
+      if (filters.availableOnly) query = query.eq('status', 'available')
+      if (filters.inMaintenance) query = query.eq('status', 'maintenance')
 
       const { data, error } = await query
 
       if (error) {
         throw error
       }
-      return data as Equipment[]
+
+      return {
+        equipment: data as Equipment[],
+        totalCount: totalCount || 0,
+        totalPages: Math.ceil((totalCount || 0) / pageSize)
+      }
     },
     staleTime: 0,
     refetchOnWindowFocus: true,
     refetchOnMount: true,
   })
+
+  const equipment = equipmentData?.equipment || []
+  const totalCount = equipmentData?.totalCount || 0
+  const totalPages = equipmentData?.totalPages || 0
 
   const { data: categories } = useQuery({
     queryKey: ['categories'],
@@ -426,6 +439,18 @@ export function EquipmentList() {
             </div>
           </DialogContent>
         </Dialog>
+      )}
+
+      {totalPages > 1 && (
+        <div className="mt-6">
+          <TablePagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            totalItems={totalCount}
+            itemsPerPage={pageSize}
+            onPageChange={setCurrentPage}
+          />
+        </div>
       )}
     </div>
   )

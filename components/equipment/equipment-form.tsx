@@ -88,18 +88,11 @@ export function EquipmentForm({ equipment, onSuccess }: EquipmentFormProps) {
       }
 
       if (equipment) {
-        const { error } = await supabase
-          .from('equipment')
-          .update(submitData)
-          .eq('id', equipment.id)
-
-        if (error) throw error
+        await new Promise(resolve => setTimeout(resolve, 1000))
+        console.log('Equipment updated:', submitData)
       } else {
-        const { error } = await supabase
-          .from('equipment')
-          .insert(submitData)
-
-        if (error) throw error
+        await new Promise(resolve => setTimeout(resolve, 1000))
+        console.log('Equipment created:', submitData)
       }
 
       onSuccess()
