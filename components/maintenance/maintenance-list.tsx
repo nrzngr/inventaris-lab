@@ -7,8 +7,7 @@ import { Input } from '@/components/ui/input'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
-import { MaintenanceForm } from './maintenance-form'
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { supabase } from '@/lib/supabase'
 import { Search, Filter, Plus, Eye, AlertCircle, Wrench } from 'lucide-react'
 
@@ -37,7 +36,6 @@ interface Equipment {
 export function MaintenanceList() {
   const [searchTerm, setSearchTerm] = useState('')
   const [filterStatus, setFilterStatus] = useState('')
-  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false)
   const [viewingRecord, setViewingRecord] = useState<MaintenanceRecord | null>(null)
 
   const queryClient = useQueryClient()
@@ -150,25 +148,13 @@ export function MaintenanceList() {
         <div>
           <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black">PEMELIHARAAN</h1>
         </div>
-        <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
-          <DialogTrigger asChild>
-            <button className="w-full sm:w-auto border border-black px-4 sm:px-6 py-2 sm:py-3 hover:bg-black hover:text-white transition-none text-sm sm:text-base">
-              <Plus className="inline w-4 h-4 mr-2" />
-              CATAT PEMELIHARAAN
-            </button>
-          </DialogTrigger>
-          <DialogContent className="sm:max-w-[600px] border border-black">
-            <DialogHeader>
-              <DialogTitle className="text-xl font-bold">CATAT PEMELIHARAAN</DialogTitle>
-            </DialogHeader>
-            <MaintenanceForm
-              onSuccess={() => {
-                setIsAddDialogOpen(false)
-                refetch()
-              }}
-            />
-          </DialogContent>
-        </Dialog>
+        <button
+          className="w-full sm:w-auto border border-black px-4 sm:px-6 py-2 sm:py-3 hover:bg-black hover:text-white transition-none text-sm sm:text-base opacity-50 cursor-not-allowed"
+          title="Fitur dalam pengembangan"
+        >
+          <Plus className="inline w-4 h-4 mr-2" />
+          CATAT PEMELIHARAAN
+        </button>
       </div>
 
       <div className="grid gap-4 sm:gap-6 lg:gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">

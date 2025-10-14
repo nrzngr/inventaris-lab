@@ -7,8 +7,7 @@ import { Input } from '@/components/ui/input'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
-import { UserForm } from './user-form'
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { supabase } from '@/lib/supabase'
 import { Search, Plus, Edit, Eye, Shield, Users } from 'lucide-react'
 
@@ -27,8 +26,6 @@ interface User {
 export function UserList() {
   const [searchTerm, setSearchTerm] = useState('')
   const [filterRole, setFilterRole] = useState('')
-  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false)
-  const [editingUser, setEditingUser] = useState<User | null>(null)
   const [viewingUser, setViewingUser] = useState<User | null>(null)
 
   const queryClient = useQueryClient()
@@ -111,28 +108,10 @@ export function UserList() {
           <h1 className="text-2xl font-bold tracking-tight">Manajemen Pengguna</h1>
           <p className="text-gray-600">Kelola pengguna dan perizinan mereka</p>
         </div>
-        <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
-          <DialogTrigger asChild>
-            <Button>
-              <Plus className="mr-2 h-4 w-4" />
-              Tambah Pengguna
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="sm:max-w-[600px]">
-            <DialogHeader>
-              <DialogTitle>Tambah Pengguna Baru</DialogTitle>
-              <DialogDescription>
-                Buat akun dan profil pengguna baru.
-              </DialogDescription>
-            </DialogHeader>
-            <UserForm
-              onSuccess={() => {
-                setIsAddDialogOpen(false)
-                refetch()
-              }}
-            />
-          </DialogContent>
-        </Dialog>
+        <Button disabled title="Fitur dalam pengembangan">
+          <Plus className="mr-2 h-4 w-4" />
+          Tambah Pengguna
+        </Button>
       </div>
 
       <Card>
@@ -210,7 +189,8 @@ export function UserList() {
                           <Button
                             variant="outline"
                             size="icon"
-                            onClick={() => setEditingUser(user)}
+                            disabled
+                            title="Fitur dalam pengembangan"
                           >
                             <Edit className="h-4 w-4" />
                           </Button>
@@ -244,27 +224,7 @@ export function UserList() {
         </CardContent>
       </Card>
 
-      {/* Edit Dialog */}
-      {editingUser && (
-        <Dialog open={!!editingUser} onOpenChange={() => setEditingUser(null)}>
-          <DialogContent className="sm:max-w-[600px]">
-            <DialogHeader>
-              <DialogTitle>Edit Pengguna</DialogTitle>
-              <DialogDescription>
-                Perbarui informasi profil pengguna.
-              </DialogDescription>
-            </DialogHeader>
-            <UserForm
-              user={editingUser}
-              onSuccess={() => {
-                setEditingUser(null)
-                refetch()
-              }}
-            />
-          </DialogContent>
-        </Dialog>
-      )}
-
+  
       {/* View Dialog */}
       {viewingUser && (
         <Dialog open={!!viewingUser} onOpenChange={() => setViewingUser(null)}>

@@ -7,8 +7,7 @@ import { Input } from '@/components/ui/input'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
-import { TransactionForm } from './transaction-form'
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { supabase } from '@/lib/supabase'
 import { Search, Filter, Plus, Eye, RotateCcw } from 'lucide-react'
 
@@ -48,7 +47,6 @@ interface Equipment {
 export function TransactionList() {
   const [searchTerm, setSearchTerm] = useState('')
   const [filterStatus, setFilterStatus] = useState('')
-  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false)
   const [viewingTransaction, setViewingTransaction] = useState<Transaction | null>(null)
 
   const queryClient = useQueryClient()
@@ -185,25 +183,13 @@ export function TransactionList() {
         <div>
           <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black">TRANSAKSI</h1>
         </div>
-        <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
-          <DialogTrigger asChild>
-            <button className="w-full sm:w-auto border border-black px-4 sm:px-6 py-2 sm:py-3 hover:bg-black hover:text-white transition-none text-sm sm:text-base">
-              <Plus className="inline w-4 h-4 mr-2" />
-              PINJAM BARU
-            </button>
-          </DialogTrigger>
-          <DialogContent className="sm:max-w-[600px] border border-black">
-            <DialogHeader>
-              <DialogTitle className="text-xl font-bold">PINJAM BARU</DialogTitle>
-            </DialogHeader>
-            <TransactionForm
-              onSuccess={() => {
-                setIsAddDialogOpen(false)
-                refetch()
-              }}
-            />
-          </DialogContent>
-        </Dialog>
+        <button
+          className="w-full sm:w-auto border border-black px-4 sm:px-6 py-2 sm:py-3 hover:bg-black hover:text-white transition-none text-sm sm:text-base opacity-50 cursor-not-allowed"
+          title="Fitur dalam pengembangan"
+        >
+          <Plus className="inline w-4 h-4 mr-2" />
+          PINJAM BARU
+        </button>
       </div>
 
       <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3 lg:space-x-4">
