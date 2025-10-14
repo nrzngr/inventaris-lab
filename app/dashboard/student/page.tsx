@@ -2,9 +2,10 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { useCustomAuth } from "@/components/auth/custom-auth-provider"
-import { Badge } from "@/components/ui/badge"
-import { Package, Users, Activity, TrendingUp, AlertTriangle, CheckCircle, Calendar, Clock, BookOpen, User } from "lucide-react"
+import type { Database } from '@/types/database'
+import { useCustomAuth } from '@/components/auth/custom-auth-provider'
+import { Badge } from '@/components/ui/badge'
+import { Package, Users, Activity, TrendingUp, AlertTriangle, CheckCircle, Calendar, Clock, BookOpen, User } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 import { DashboardLayout } from '@/components/layout/dashboard-layout'
 import { DashboardCharts } from '@/components/analytics/dashboard-charts'
@@ -37,6 +38,17 @@ interface AvailableEquipment {
   image_url?: string
 }
 
+type BorrowingTransactionRow = Database['public']['Tables']['borrowing_transactions']['Row']
+
+type TransactionWithEquipment = BorrowingTransactionRow & {
+  equipment?: {
+    name?: string | null
+    categories?: {
+      name?: string | null
+    } | null
+  } | null
+}
+
 export default function StudentDashboard() {
   const { user, isAuthenticated } = useCustomAuth()
   const router = useRouter()
@@ -50,25 +62,23 @@ export default function StudentDashboard() {
       if (!user || !isAuthenticated) return
 
       try {
-        // Fetch student's borrowing stats
         const { data: transactionData } = await supabase
           .from('borrowing_transactions')
           .select('*, equipment(name, categories(name))')
           .eq('user_id', user.id)
           .order('created_at', { ascending: false })
 
-        if (transactionData) {
-          const currentlyBorrowed = transactionData.filter(t => t.status === 'active').length
-          const overdueItems = transactionData.filter(t =>
-            t.status === 'active' &&
-            new Date(t.expected_return_date) < new Date()
-          ).length
-          const totalBorrowed = transactionData.length
+        const transactions = (transactionData ?? []) as TransactionWithEquipment[]
 
-          // Calculate favorite category
+        if (transactions.length) {
+          const currentlyBorrowed = transactions.filter((t) => t.status === 'active').length
+          const overdueItems = transactions.filter(
+            (t) => t.status === 'active' && new Date(t.expected_return_date) < new Date()
+          ).length
+          const totalBorrowed = transactions.length
           const categoryCount: Record<string, number> = {}
-          transactionData.forEach(t => {
-            const categoryName = (t.equipment as { categories?: { name?: string } })?.categories?.name || 'Uncategorized'
+          transactions.forEach((t) => {
+            const categoryName = t.equipment?.categories?.name || 'Uncategorized'
             categoryCount[categoryName] = (categoryCount[categoryName] || 0) + 1
           })
 
@@ -84,10 +94,9 @@ export default function StudentDashboard() {
           })
         }
 
-        // Fetch recent transactions (last 5)
-        const recentData = transactionData?.slice(0, 5).map(t => ({
+        const recentData = transactions.slice(0, 5).map((t) => ({
           id: t.id,
-          equipment_name: (t.equipment as { name?: string })?.name || 'Unknown Equipment',
+          equipment_name: t.equipment?.name || 'Unknown Equipment',
           borrow_date: t.borrow_date,
           expected_return_date: t.expected_return_date,
           actual_return_date: t.actual_return_date,
@@ -96,7 +105,6 @@ export default function StudentDashboard() {
 
         setRecentTransactions(recentData)
 
-        // Fetch available equipment for quick browse
         const { data: availableData } = await supabase
           .from('equipment')
           .select('id, name, categories(name), image_url')
@@ -104,7 +112,7 @@ export default function StudentDashboard() {
           .limit(6)
 
         if (availableData) {
-          const equipment = availableData.map(item => ({
+          const equipment = availableData.map((item: any) => ({
             id: item.id,
             name: item.name,
             category: (item.categories as { name?: string })?.name || 'Uncategorized',
