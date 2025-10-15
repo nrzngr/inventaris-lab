@@ -47,6 +47,84 @@ export interface Database {
         Insert: Omit<Database['public']['Tables']['notifications']['Row'], 'id' | 'created_at' | 'read_at'>
         Update: Partial<Database['public']['Tables']['notifications']['Insert']>
       }
+      users: {
+        Row: {
+          id: string
+          email: string
+          full_name: string
+          role: 'admin' | 'lab_staff' | 'lecturer' | 'student'
+          department: string
+          nim?: string | null
+          nip?: string | null
+          phone?: string | null
+          student_level?: string | null
+          lecturer_rank?: string | null
+          email_verified?: boolean
+          email_verified_at?: string | null
+          last_login_at?: string | null
+          login_count?: number
+          locked_until?: string | null
+          failed_login_attempts?: number
+          custom_password?: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: Omit<Database['public']['Tables']['users']['Row'], 'id' | 'created_at' | 'updated_at'>
+        Update: Partial<Database['public']['Tables']['users']['Insert']>
+      }
+      password_reset_tokens: {
+        Row: {
+          id: string
+          user_id: string
+          token: string
+          expires_at: string
+          used_at: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: Omit<Database['public']['Tables']['password_reset_tokens']['Row'], 'id' | 'created_at' | 'updated_at'>
+        Update: Partial<Database['public']['Tables']['password_reset_tokens']['Insert']>
+      }
+      email_verification_tokens: {
+        Row: {
+          id: string
+          user_id: string
+          token: string
+          expires_at: string
+          used_at: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: Omit<Database['public']['Tables']['email_verification_tokens']['Row'], 'id' | 'created_at' | 'updated_at'>
+        Update: Partial<Database['public']['Tables']['email_verification_tokens']['Insert']>
+      }
+      failed_login_attempts: {
+        Row: {
+          id: string
+          email: string
+          ip_address: string
+          user_agent: string | null
+          attempted_at: string
+          created_at: string
+        }
+        Insert: Omit<Database['public']['Tables']['failed_login_attempts']['Row'], 'id' | 'attempted_at' | 'created_at'>
+        Update: Partial<Database['public']['Tables']['failed_login_attempts']['Insert']>
+      }
+      audit_logs: {
+        Row: {
+          id: string
+          user_id: string | null
+          action: string
+          resource_type: string
+          resource_id: string | null
+          details: any | null
+          ip_address: string | null
+          user_agent: string | null
+          created_at: string
+        }
+        Insert: Omit<Database['public']['Tables']['audit_logs']['Row'], 'id' | 'created_at'>
+        Update: Partial<Database['public']['Tables']['audit_logs']['Insert']>
+      }
     }
     Views: {
       equipment_status_view: {
