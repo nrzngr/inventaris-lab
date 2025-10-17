@@ -244,46 +244,47 @@ export function DashboardCharts() {
       {equipmentStatusData.length > 0 || categoryData.length > 0 || transactionData.length > 0 || userActivityData.length > 0 ? (
         <>
           {/* Charts Grid */}
-          <div className="grid gap-6 md:grid-cols-2">
+          <div className="grid gap-4 sm:gap-6 grid-cols-1 lg:grid-cols-2">
             {/* Equipment Status Pie Chart */}
-            <Card>
+            <Card className="min-h-[350px] sm:min-h-[400px]">
               <CardHeader>
-                <CardTitle>Equipment Status</CardTitle>
-                <CardDescription>Distribution of equipment by current status</CardDescription>
+                <CardTitle className="text-sm sm:text-base">Equipment Status</CardTitle>
+                <CardDescription className="text-xs sm:text-sm">Distribution of equipment by current status</CardDescription>
               </CardHeader>
-              <CardContent>
-                <ResponsiveContainer width="100%" height={250}>
-                  <PieChart>
-                    <Pie
-                      data={equipmentStatusData}
-                      cx="50%"
-                      cy="50%"
-                      labelLine={false}
-                      label={({ name, percent }: { name?: string; percent?: number }) => {
-                        if (name && percent !== undefined) {
-                          return `${name} ${(percent * 100).toFixed(0)}%`
-                        }
-                        return ''
-                      }}
-                      outerRadius={80}
-                      fill="#8884d8"
-                      dataKey="value"
-                    >
-                      {equipmentStatusData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={entry.fill || COLORS[index % COLORS.length]} />
-                      ))}
-                    </Pie>
-                    <Tooltip />
-                  </PieChart>
-                </ResponsiveContainer>
-                <div className="mt-4 flex flex-wrap gap-2 justify-center">
+              <CardContent className="px-2 sm:px-4">
+                <div className="w-full h-[250px] sm:h-[300px]">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie
+                        data={equipmentStatusData}
+                        cx="50%"
+                        cy="50%"
+                        labelLine={false}
+                        label={({ name, percent }: { name?: string; percent?: number }) => {
+                          if (name && percent !== undefined && percent > 0.05) {
+                            return `${name} ${(percent * 100).toFixed(0)}%`
+                          }
+                          return ''
+                        }}
+                        outerRadius={60}
+                        fill="#8884d8"
+                        dataKey="value"
+                      >
+                        {equipmentStatusData.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={entry.fill || COLORS[index % COLORS.length]} />
+                        ))}
+                      </Pie>
+                    </PieChart>
+                  </ResponsiveContainer>
+                </div>
+                <div className="mt-4 flex flex-wrap gap-1 sm:gap-2 justify-center">
                   {equipmentStatusData.map((item, index) => (
-                    <div key={item.name} className="flex items-center space-x-2">
+                    <div key={item.name} className="flex items-center space-x-1 sm:space-x-2">
                       <div
-                        className="w-3 h-3 rounded-full"
+                        className="w-2 h-2 sm:w-3 sm:h-3 rounded-full flex-shrink-0"
                         style={{ backgroundColor: item.fill || COLORS[index % COLORS.length] }}
                       ></div>
-                      <span className="text-sm text-gray-600">{item.name}: {item.value}</span>
+                      <span className="text-xs sm:text-sm text-gray-600">{item.name}: {item.value}</span>
                     </div>
                   ))}
                 </div>
@@ -291,118 +292,126 @@ export function DashboardCharts() {
             </Card>
 
             {/* Equipment Categories Bar Chart */}
-            <Card>
+            <Card className="min-h-[350px] sm:min-h-[400px]">
               <CardHeader>
-                <CardTitle>Equipment by Category</CardTitle>
-                <CardDescription>Number of available equipment by category</CardDescription>
+                <CardTitle className="text-sm sm:text-base">Equipment by Category</CardTitle>
+                <CardDescription className="text-xs sm:text-sm">Number of available equipment by category</CardDescription>
               </CardHeader>
-              <CardContent>
-                <ResponsiveContainer width="100%" height={250}>
-                  <BarChart data={categoryData}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis
-                      dataKey="name"
-                      angle={-45}
-                      textAnchor="end"
-                      height={80}
-                      interval={0}
-                    />
-                    <YAxis />
-                    <Tooltip />
-                    <Bar dataKey="count" fill="#3b82f6" />
-                  </BarChart>
-                </ResponsiveContainer>
+              <CardContent className="px-2 sm:px-4">
+                <div className="w-full h-[250px] sm:h-[300px]">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart data={categoryData}>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis
+                        dataKey="name"
+                        angle={-45}
+                        textAnchor="end"
+                        height={60}
+                        interval={0}
+                        tick={{ fontSize: 10 }}
+                      />
+                      <YAxis tick={{ fontSize: 10 }} />
+                      <Tooltip />
+                      <Bar dataKey="count" fill="#3b82f6" />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
               </CardContent>
             </Card>
 
             {/* Transaction Trend Line Chart */}
-            <Card>
+            <Card className="min-h-[350px] sm:min-h-[400px]">
               <CardHeader>
-                <CardTitle>Transaction Trends</CardTitle>
-                <CardDescription>Daily borrowing and return activity</CardDescription>
+                <CardTitle className="text-sm sm:text-base">Transaction Trends</CardTitle>
+                <CardDescription className="text-xs sm:text-sm">Daily borrowing and return activity</CardDescription>
               </CardHeader>
-              <CardContent>
-                <ResponsiveContainer width="100%" height={250}>
-                  <LineChart data={transactionData}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis
-                      dataKey="date"
-                      angle={-45}
-                      textAnchor="end"
-                      height={60}
-                      interval={Math.floor(transactionData.length / 5)}
-                    />
-                    <YAxis />
-                    <Tooltip />
-                    <Legend />
-                    <Line
-                      type="monotone"
-                      dataKey="borrowings"
-                      stroke="#3b82f6"
-                      strokeWidth={2}
-                      name="Borrowings"
-                    />
-                    <Line
-                      type="monotone"
-                      dataKey="returns"
-                      stroke="#10b981"
-                      strokeWidth={2}
-                      name="Returns"
-                    />
-                  </LineChart>
-                </ResponsiveContainer>
+              <CardContent className="px-2 sm:px-4">
+                <div className="w-full h-[250px] sm:h-[300px]">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <LineChart data={transactionData}>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis
+                        dataKey="date"
+                        angle={-45}
+                        textAnchor="end"
+                        height={60}
+                        interval={Math.max(1, Math.floor(transactionData.length / 3))}
+                        tick={{ fontSize: 10 }}
+                      />
+                      <YAxis tick={{ fontSize: 10 }} />
+                      <Tooltip />
+                      <Legend wrapperStyle={{ fontSize: 12 }} />
+                      <Line
+                        type="monotone"
+                        dataKey="borrowings"
+                        stroke="#3b82f6"
+                        strokeWidth={2}
+                        name="Borrowings"
+                      />
+                      <Line
+                        type="monotone"
+                        dataKey="returns"
+                        stroke="#10b981"
+                        strokeWidth={2}
+                        name="Returns"
+                      />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </div>
               </CardContent>
             </Card>
 
             {/* User Activity Chart */}
-            <Card>
+            <Card className="min-h-[350px] sm:min-h-[400px]">
               <CardHeader>
-                <CardTitle>User Activity</CardTitle>
-                <CardDescription>Monthly user registration and activity</CardDescription>
+                <CardTitle className="text-sm sm:text-base">User Activity</CardTitle>
+                <CardDescription className="text-xs sm:text-sm">Monthly user registration and activity</CardDescription>
               </CardHeader>
-              <CardContent>
-                <ResponsiveContainer width="100%" height={250}>
-                  <BarChart data={userActivityData}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="month" />
-                    <YAxis />
-                    <Tooltip />
-                    <Legend />
-                    <Bar dataKey="new" fill="#8b5cf6" name="New Users" />
-                    <Bar dataKey="active" fill="#10b981" name="Active Users" />
-                  </BarChart>
-                </ResponsiveContainer>
+              <CardContent className="px-2 sm:px-4">
+                <div className="w-full h-[250px] sm:h-[300px]">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart data={userActivityData}>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="month" tick={{ fontSize: 10 }} />
+                      <YAxis tick={{ fontSize: 10 }} />
+                      <Tooltip />
+                      <Legend wrapperStyle={{ fontSize: 12 }} />
+                      <Bar dataKey="new" fill="#8b5cf6" name="New Users" />
+                      <Bar dataKey="active" fill="#10b981" name="Active Users" />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
               </CardContent>
             </Card>
           </div>
 
           {/* Summary Stats */}
-          <div className="grid gap-4 md:grid-cols-4">
+          <div className="grid gap-3 sm:gap-4 grid-cols-2 sm:grid-cols-4">
             <Card>
-              <CardContent className="p-4">
+              <CardContent className="p-3 sm:p-4">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-600">Total Transactions</p>
-                    <p className="text-2xl font-bold text-gray-900">
+                    <p className="text-xs sm:text-sm font-medium text-gray-600">Total Transactions</p>
+                    <p className="text-xl sm:text-2xl font-bold text-gray-900">
                       {transactionData.reduce((sum, day) => sum + day.borrowings + day.returns, 0)}
                     </p>
                     <p className="text-xs text-gray-500">
                       {timeRange === '7days' ? 'Last 7 days' : timeRange === '30days' ? 'Last 30 days' : 'Last 90 days'}
                     </p>
                   </div>
-                  <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                    <div className="w-5 h-5 bg-blue-600 rounded-full"></div>
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
+                    <div className="w-3 h-3 sm:w-5 sm:h-5 bg-blue-600 rounded-full"></div>
                   </div>
                 </div>
               </CardContent>
             </Card>
 
             <Card>
-              <CardContent className="p-4">
+              <CardContent className="p-3 sm:p-4">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-600">Avg Daily Borrowings</p>
-                    <p className="text-2xl font-bold text-gray-900">
+                    <p className="text-xs sm:text-sm font-medium text-gray-600">Avg Daily</p>
+                    <p className="text-xl sm:text-2xl font-bold text-gray-900">
                       {transactionData.length > 0
                         ? Math.round(transactionData.reduce((sum, day) => sum + day.borrowings, 0) / transactionData.length)
                         : 0
@@ -412,46 +421,46 @@ export function DashboardCharts() {
                       {transactionData.length > 0 ? 'Per day average' : 'No data'}
                     </p>
                   </div>
-                  <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
-                    <div className="w-5 h-5 bg-green-600 rounded-full"></div>
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                    <div className="w-3 h-3 sm:w-5 sm:h-5 bg-green-600 rounded-full"></div>
                   </div>
                 </div>
               </CardContent>
             </Card>
 
             <Card>
-              <CardContent className="p-4">
+              <CardContent className="p-3 sm:p-4">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-600">Available Equipment</p>
-                    <p className="text-2xl font-bold text-gray-900">
+                    <p className="text-xs sm:text-sm font-medium text-gray-600">Available</p>
+                    <p className="text-xl sm:text-2xl font-bold text-gray-900">
                       {equipmentStatusData.find(item => item.name === 'Available')?.value || 0}
                     </p>
                     <p className="text-xs text-gray-500">
                       Ready for borrowing
                     </p>
                   </div>
-                  <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
-                    <div className="w-5 h-5 bg-green-600 rounded-full"></div>
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                    <div className="w-3 h-3 sm:w-5 sm:h-5 bg-green-600 rounded-full"></div>
                   </div>
                 </div>
               </CardContent>
             </Card>
 
             <Card>
-              <CardContent className="p-4">
+              <CardContent className="p-3 sm:p-4">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-600">Top Category</p>
-                    <p className="text-lg font-bold text-gray-900 truncate">
+                    <p className="text-xs sm:text-sm font-medium text-gray-600">Top Category</p>
+                    <p className="text-sm sm:text-lg font-bold text-gray-900 truncate">
                       {categoryData.length > 0 ? categoryData[0]?.name : 'N/A'}
                     </p>
                     <p className="text-xs text-gray-500">
                       {categoryData.length > 0 ? `${categoryData[0]?.count} items` : 'No data'}
                     </p>
                   </div>
-                  <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
-                    <div className="w-5 h-5 bg-purple-600 rounded-full"></div>
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0">
+                    <div className="w-3 h-3 sm:w-5 sm:h-5 bg-purple-600 rounded-full"></div>
                   </div>
                 </div>
               </CardContent>
@@ -459,13 +468,13 @@ export function DashboardCharts() {
           </div>
 
           {/* Additional Insights */}
-          <div className="grid gap-4 md:grid-cols-2">
+          <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2">
             <Card>
-              <CardContent className="p-4">
+              <CardContent className="p-3 sm:p-4">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-600">Equipment Utilization</p>
-                    <p className="text-lg font-bold text-gray-900">
+                    <p className="text-xs sm:text-sm font-medium text-gray-600">Equipment Utilization</p>
+                    <p className="text-sm sm:text-lg font-bold text-gray-900">
                       {equipmentStatusData.length > 0
                         ? Math.round(((equipmentStatusData.find(item => item.name === 'Borrowed')?.value || 0) /
                                     equipmentStatusData.reduce((sum, item) => sum + item.value, 0)) * 100)
@@ -475,19 +484,19 @@ export function DashboardCharts() {
                       Currently borrowed / total
                     </p>
                   </div>
-                  <div className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center">
-                    <div className="w-5 h-5 bg-orange-600 rounded-full"></div>
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 bg-orange-100 rounded-full flex items-center justify-center flex-shrink-0">
+                    <div className="w-3 h-3 sm:w-5 sm:h-5 bg-orange-600 rounded-full"></div>
                   </div>
                 </div>
               </CardContent>
             </Card>
 
             <Card>
-              <CardContent className="p-4">
+              <CardContent className="p-3 sm:p-4">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-600">Monthly Active Users</p>
-                    <p className="text-lg font-bold text-gray-900">
+                    <p className="text-xs sm:text-sm font-medium text-gray-600">Monthly Active Users</p>
+                    <p className="text-sm sm:text-lg font-bold text-gray-900">
                       {userActivityData.length > 0
                         ? userActivityData[userActivityData.length - 1]?.active || 0
                         : 0
@@ -497,8 +506,8 @@ export function DashboardCharts() {
                       Last 30 days activity
                     </p>
                   </div>
-                  <div className="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center">
-                    <div className="w-5 h-5 bg-indigo-600 rounded-full"></div>
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 bg-indigo-100 rounded-full flex items-center justify-center flex-shrink-0">
+                    <div className="w-3 h-3 sm:w-5 sm:h-5 bg-indigo-600 rounded-full"></div>
                   </div>
                 </div>
               </CardContent>

@@ -179,7 +179,7 @@ export default function Dashboard() {
 
   return (
     <DashboardLayout>
-      <div className="w-full px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-12 page-gradient min-h-screen">
+      <div className="w-full px-3 sm:px-4 md:px-6 lg:px-8 xl:px-12 py-4 sm:py-6 md:py-8 lg:py-12 page-gradient min-h-screen">
         {/* Enhanced Header */}
         <div className="mb-8 lg:mb-12 fade-in">
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4 sm:gap-6">
@@ -195,7 +195,7 @@ export default function Dashboard() {
         </div>
 
         {/* Stats Grid - Enhanced spacing */}
-        <div className="grid gap-6 lg:gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 mb-8 lg:mb-16">
+        <div className="grid gap-3 sm:gap-4 md:gap-6 lg:gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 mb-6 sm:mb-8 lg:mb-16">
           <ModernCard variant="elevated" hover className="stats-card p-4 sm:p-6">
             <div className="flex items-center justify-between mb-3 sm:mb-4">
               <span className="text-xs sm:text-sm font-bold text-gray-600 uppercase tracking-wider">Equipment</span>
@@ -285,13 +285,13 @@ export default function Dashboard() {
         )}
 
         {/* Quick Actions - Enhanced layout */}
-        <div className="mb-8 lg:mb-16">
+        <div className="mb-6 sm:mb-8 lg:mb-16">
           <ModernCardHeader
             title="Aksi Cepat"
             description="Navigasi ke area manajemen kunci"
-            className="mb-6 lg:mb-8"
+            className="mb-4 sm:mb-6 lg:mb-8"
           />
-          <div className="grid gap-6 lg:gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-4 sm:gap-6 lg:gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
             <ModernCard
               variant="default"
               hover
@@ -355,14 +355,16 @@ export default function Dashboard() {
         </div>
 
         {/* Analytics - Enhanced spacing */}
-        <div className="mb-8 lg:mb-16">
+        <div className="mb-6 sm:mb-8 lg:mb-16">
           <ModernCardHeader
             title="Ringkasan Analitik"
             description="Gambaran penggunaan dan tren peralatan"
-            className="mb-6 lg:mb-8"
+            className="mb-4 sm:mb-6 lg:mb-8"
           />
-          <div className="bg-white rounded-2xl border border-gray-200 p-6 lg:p-10 shadow-lg">
-            <DashboardCharts />
+          <div className="bg-white rounded-2xl border border-gray-200 p-4 sm:p-6 md:p-8 lg:p-10 shadow-lg overflow-hidden">
+            <div className="w-full overflow-x-auto">
+              <DashboardCharts />
+            </div>
           </div>
         </div>
 
@@ -377,7 +379,7 @@ export default function Dashboard() {
             <ModernCard variant="default" padding="none">
               <div className="divide-y divide-black">
                 {recentActivity.map((activity) => (
-                  <div key={activity.id} className="p-4 lg:p-6 hover:bg-gray-50 transition-colors">
+                  <div key={activity.id} className="p-4 lg:p-6 transition-colors hover:bg-white/70 hover:backdrop-blur-sm">
                     {/* Header row with type, date and status */}
                     <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2 sm:gap-4 mb-3 lg:mb-4">
                       <div className="flex items-center gap-2 lg:gap-3">

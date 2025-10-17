@@ -141,10 +141,10 @@ export default function EquipmentDetailPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen page-gradient flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading equipment details...</p>
+          <div className="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-4 border-[#ff007a] border-t-transparent"></div>
+          <p className="text-sm font-medium text-[#6d7079]">Loading equipment details...</p>
         </div>
       </div>
     )
@@ -152,10 +152,10 @@ export default function EquipmentDetailPage() {
 
   if (error || !equipment) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen page-gradient flex items-center justify-center">
         <div className="text-center">
-          <AlertTriangle className="w-12 h-12 text-red-500 mx-auto mb-4" />
-          <p className="text-red-600 mb-4">{error || 'Equipment not found'}</p>
+          <AlertTriangle className="mx-auto mb-4 h-12 w-12 text-[#ff007a]" />
+          <p className="mb-4 text-sm font-medium text-[#b4235d]">{error || 'Equipment not found'}</p>
           <ModernButton onClick={() => router.back()} variant="outline">
             Go Back
           </ModernButton>
@@ -165,7 +165,7 @@ export default function EquipmentDetailPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen page-gradient">
       {/* Header */}
       <div className="bg-white border-b border-gray-200">
         <div className="container mx-auto px-4 py-4">

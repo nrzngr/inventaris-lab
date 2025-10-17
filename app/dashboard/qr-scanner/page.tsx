@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { QRScanner } from '@/components/mobile/qr-scanner'
 import { ModernCard } from '@/components/ui/modern-card'
 import { ModernButton } from '@/components/ui/modern-button'
+import { ModernBadge } from '@/components/ui/modern-badge'
 import { Camera, Search, ArrowLeft, Info } from 'lucide-react'
 
 export default function QRScannerPage() {
@@ -64,40 +65,40 @@ export default function QRScannerPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen page-gradient">
       {/* Header */}
-      <div className="bg-white border-b border-gray-200">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <ModernButton
-                onClick={() => router.back()}
-                variant="ghost"
-                size="sm"
-                leftIcon={<ArrowLeft className="w-4 h-4" />}
-              >
-                Back
-              </ModernButton>
-              <div>
-                <h1 className="text-xl font-bold text-gray-900">QR Scanner</h1>
-                <p className="text-sm text-gray-600">Scan equipment QR codes for quick access</p>
-              </div>
-            </div>
-
+      <div className="border-b border-[#f1d6e6]/70 bg-white/85 backdrop-blur-xl shadow-[0_12px_28px_rgba(17,24,39,0.08)]">
+        <div className="mx-auto flex w-full max-w-5xl items-center justify-between px-4 py-5">
+          <div className="flex items-center gap-4">
             <ModernButton
-              onClick={() => router.push('/dashboard/equipment')}
-              variant="outline"
+              onClick={() => router.back()}
+              variant="ghost"
               size="sm"
-              leftIcon={<Search className="w-4 h-4" />}
+              leftIcon={<ArrowLeft className="w-4 h-4" />}
             >
-              Search Manual
+              Back
             </ModernButton>
+            <div className="space-y-1">
+              <h1 className="text-2xl font-semibold text-[#111827]">QR Scanner</h1>
+              <p className="text-sm font-medium text-[#6d7079]">
+                Scan equipment QR codes for quick access
+              </p>
+            </div>
           </div>
+
+          <ModernButton
+            onClick={() => router.push('/dashboard/equipment')}
+            variant="outline"
+            size="sm"
+            leftIcon={<Search className="w-4 h-4" />}
+          >
+            Search Manual
+          </ModernButton>
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-6">
-        <div className="max-w-2xl mx-auto space-y-6">
+      <div className="mx-auto w-full max-w-5xl px-4 py-8 lg:py-10">
+        <div className="mx-auto max-w-2xl space-y-6">
           {/* QR Scanner */}
           {!scanResult && (
             <QRScanner
@@ -111,73 +112,107 @@ export default function QRScannerPage() {
             <div className="space-y-4">
               {/* Scan Success Card */}
               <ModernCard variant="default" padding="lg">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="p-2 bg-green-100 rounded-lg">
-                    <Camera className="w-6 h-6 text-green-600" />
+                <div className="mb-4 flex items-center gap-3">
+                  <div className="rounded-[14px] bg-[#dcfce7] p-2">
+                    <Camera className="h-6 w-6 text-[#15803d]" />
                   </div>
                   <div>
-                    <h2 className="text-lg font-bold text-gray-900">QR Code Scanned</h2>
-                    <p className="text-sm text-gray-600">Equipment identified successfully</p>
+                    <h2 className="text-lg font-semibold text-[#111827]">QR Code Scanned</h2>
+                    <p className="text-sm font-medium text-[#6d7079]">
+                      Equipment identified successfully
+                    </p>
                   </div>
                 </div>
 
                 {isLoading ? (
-                  <div className="flex items-center justify-center py-8">
-                    <div className="animate-spin w-6 h-6 border-2 border-blue-600 border-t-transparent rounded-full"></div>
-                    <span className="ml-2 text-gray-600">Loading equipment details...</span>
+                  <div className="flex items-center justify-center gap-3 rounded-[18px] bg-[#f3f4fb] py-6">
+                    <div className="h-6 w-6 animate-spin rounded-full border-2 border-[#ff007a] border-t-transparent" />
+                    <span className="text-sm font-medium text-[#6d7079]">
+                      Loading equipment details...
+                    </span>
                   </div>
                 ) : equipmentDetails ? (
                   <div className="space-y-4">
                     {/* Equipment Info */}
-                    <div className="p-4 bg-gray-50 rounded-lg">
-                      <h3 className="font-semibold text-gray-900 mb-3">Equipment Information</h3>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="rounded-[18px] bg-[#f3f4fb] p-5">
+                      <h3 className="mb-3 text-base font-semibold text-[#111827]">Equipment Information</h3>
+                      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                         <div>
-                          <p className="text-sm text-gray-600">Name</p>
-                          <p className="font-medium">{equipmentDetails.name}</p>
+                          <p className="text-xs font-medium uppercase tracking-wide text-[#9aa1b3]">
+                            Name
+                          </p>
+                          <p className="text-sm font-semibold text-[#111827]">
+                            {equipmentDetails.name}
+                          </p>
                         </div>
                         <div>
-                          <p className="text-sm text-gray-600">Serial Number</p>
-                          <p className="font-medium">{equipmentDetails.serial_number}</p>
+                          <p className="text-xs font-medium uppercase tracking-wide text-[#9aa1b3]">
+                            Serial Number
+                          </p>
+                          <p className="text-sm font-semibold text-[#111827]">
+                            {equipmentDetails.serial_number}
+                          </p>
                         </div>
                         <div>
-                          <p className="text-sm text-gray-600">Category</p>
-                          <p className="font-medium">{equipmentDetails.category_name}</p>
+                          <p className="text-xs font-medium uppercase tracking-wide text-[#9aa1b3]">
+                            Category
+                          </p>
+                          <p className="text-sm font-semibold text-[#111827]">
+                            {equipmentDetails.category_name}
+                          </p>
                         </div>
                         <div>
-                          <p className="text-sm text-gray-600">Location</p>
-                          <p className="font-medium">{equipmentDetails.location}</p>
+                          <p className="text-xs font-medium uppercase tracking-wide text-[#9aa1b3]">
+                            Location
+                          </p>
+                          <p className="text-sm font-semibold text-[#111827]">
+                            {equipmentDetails.location}
+                          </p>
                         </div>
                         <div>
-                          <p className="text-sm text-gray-600">Status</p>
-                          <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                            equipmentDetails.status === 'available'
-                              ? 'bg-green-100 text-green-800'
-                              : equipmentDetails.status === 'borrowed'
-                              ? 'bg-red-100 text-red-800'
-                              : 'bg-yellow-100 text-yellow-800'
-                          }`}>
+                          <p className="text-xs font-medium uppercase tracking-wide text-[#9aa1b3]">
+                            Status
+                          </p>
+                          <ModernBadge
+                            variant={
+                              equipmentDetails.status === 'available'
+                                ? 'success'
+                                : equipmentDetails.status === 'borrowed'
+                                ? 'destructive'
+                                : 'warning'
+                            }
+                            size="sm"
+                            className="capitalize"
+                          >
                             {equipmentDetails.status}
-                          </span>
+                          </ModernBadge>
                         </div>
                         <div>
-                          <p className="text-sm text-gray-600">Condition</p>
-                          <p className="font-medium capitalize">{equipmentDetails.condition}</p>
+                          <p className="text-xs font-medium uppercase tracking-wide text-[#9aa1b3]">
+                            Condition
+                          </p>
+                          <p className="text-sm font-semibold capitalize text-[#111827]">
+                            {equipmentDetails.condition}
+                          </p>
                         </div>
                       </div>
 
                       {equipmentDetails.description && (
-                        <div className="mt-4">
-                          <p className="text-sm text-gray-600">Description</p>
-                          <p className="text-sm">{equipmentDetails.description}</p>
+                        <div className="mt-4 rounded-[18px] bg-white/80 p-4">
+                          <p className="text-xs font-medium uppercase tracking-wide text-[#9aa1b3]">
+                            Description
+                          </p>
+                          <p className="mt-2 text-sm font-medium text-[#444d5b]">
+                            {equipmentDetails.description}
+                          </p>
                         </div>
                       )}
                     </div>
 
                     {/* Quick Actions */}
                     <div className="space-y-3">
-                      <h4 className="font-semibold text-gray-900">Quick Actions</h4>
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                      <h4 className="text-base font-semibold text-[#111827]">Quick Actions</h4>
+                      <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
                         <ModernButton
                           onClick={handleBorrowEquipment}
                           variant="default"
@@ -204,9 +239,9 @@ export default function QRScannerPage() {
                     </div>
 
                     {equipmentDetails.status !== 'available' && (
-                      <div className="flex items-center gap-2 p-3 bg-yellow-50 rounded-lg">
-                        <Info className="w-4 h-4 text-yellow-600" />
-                        <span className="text-sm text-yellow-800">
+                      <div className="flex items-center gap-3 rounded-[18px] bg-[#fff6e6] px-4 py-3">
+                        <Info className="h-4 w-4 text-[#b45309]" />
+                        <span className="text-sm font-medium text-[#b45309]">
                           This equipment is currently {equipmentDetails.status}.
                           {equipmentDetails.status === 'borrowed' && ' You can reserve it for future use.'}
                         </span>
@@ -214,8 +249,8 @@ export default function QRScannerPage() {
                     )}
                   </div>
                 ) : (
-                  <div className="text-center py-8">
-                    <p className="text-gray-600">Equipment details not found</p>
+                  <div className="rounded-[18px] bg-white/70 py-8 text-center backdrop-blur">
+                    <p className="text-sm font-medium text-[#6d7079]">Equipment details not found</p>
                     <ModernButton
                       onClick={resetScanner}
                       variant="outline"
@@ -229,7 +264,7 @@ export default function QRScannerPage() {
 
                 {/* Reset Button */}
                 {!isLoading && (
-                  <div className="pt-4 border-t">
+                  <div className="border-t border-[#f1d6e6]/70 pt-4">
                     <ModernButton
                       onClick={resetScanner}
                       variant="outline"
@@ -245,9 +280,9 @@ export default function QRScannerPage() {
 
           {/* Instructions */}
           {!scanResult && (
-            <ModernCard variant="outline" padding="lg">
-              <h3 className="font-semibold text-gray-900 mb-3">How to Use QR Scanner</h3>
-              <div className="space-y-2 text-sm text-gray-600">
+            <ModernCard variant="outline" padding="lg" className="bg-white/80 backdrop-blur-sm">
+              <h3 className="mb-3 text-base font-semibold text-[#111827]">How to Use QR Scanner</h3>
+              <div className="space-y-2 text-sm font-medium text-[#6d7079]">
                 <p>1. Position your device camera over the equipment QR code</p>
                 <p>2. Ensure good lighting and steady hands for best results</p>
                 <p>3. The scanner will automatically detect and read the QR code</p>

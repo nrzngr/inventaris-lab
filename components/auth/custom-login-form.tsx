@@ -1,13 +1,23 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { Eye, EyeOff } from 'lucide-react'
+import { Eye, EyeOff, User, Key } from 'lucide-react'
 
 import { LoginAccent } from './login-accent'
 import { useCustomAuth } from './custom-auth-provider'
+
+interface DemoAccount {
+  email: string
+  password: string
+  role: string
+  description: string
+  full_name: string
+  isDatabase: boolean
+  created_at?: string
+}
 
 export function CustomLoginForm() {
   const { login, loading, user } = useCustomAuth()
@@ -19,6 +29,38 @@ export function CustomLoginForm() {
   const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [demoAccounts, setDemoAccounts] = useState<DemoAccount[]>([])
+  const [loadingDemo, setLoadingDemo] = useState(true)
+  const [showDemoPasswords, setShowDemoPasswords] = useState(false)
+
+  // Fetch demo accounts from database
+  useEffect(() => {
+    const fetchDemoAccounts = async () => {
+      try {
+        const response = await fetch('/api/demo-accounts')
+        if (response.ok) {
+          const data = await response.json()
+          setDemoAccounts(data.demoAccounts || [])
+        } else {
+          console.error('Failed to fetch demo accounts')
+        }
+      } catch (error) {
+        console.error('Error fetching demo accounts:', error)
+      } finally {
+        setLoadingDemo(false)
+      }
+    }
+
+    fetchDemoAccounts()
+  }, [])
+
+  const handleDemoAccountClick = (account: DemoAccount) => {
+    setFormData({
+      email: account.email,
+      password: account.password
+    })
+    setShowPassword(true)
+  }
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
@@ -138,6 +180,96 @@ export function CustomLoginForm() {
                 </p>
               )}
             </form>
+
+            {/* Demo Accounts Section */}
+            <div className="mt-12">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-sm font-semibold text-[#6d7079]">
+                  Demo Accounts
+                </h3>
+                <button
+                  type="button"
+                  onClick={() => setShowDemoPasswords(!showDemoPasswords)}
+                  className="text-xs text-[#ff007a] hover:text-[#e6006f] transition-colors"
+                >
+                  {showDemoPasswords ? 'Hide' : 'Show'} Passwords
+                </button>
+              </div>
+
+              {loadingDemo ? (
+                <div className="space-y-2">
+                  {[1, 2, 3, 4].map((i) => (
+                    <div key={i} className="animate-pulse">
+                      <div className="h-16 bg-[#eef0f8] rounded-xl"></div>
+                    </div>
+                  ))}
+                </div>
+              ) : demoAccounts.length > 0 ? (
+                <div className="space-y-2">
+                  {demoAccounts.map((account, index) => (
+                    <div
+                      key={index}
+                      onClick={() => handleDemoAccountClick(account)}
+                      className="group relative overflow-hidden rounded-xl border border-[#dfe2ec] bg-[#eef0f8] p-3 cursor-pointer transition-all hover:shadow-md hover:border-[#ff007a] hover:scale-[1.02] active:scale-[0.98]"
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-3">
+                          <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-[#ff007a]/10 group-hover:bg-[#ff007a]/20 transition-colors">
+                            <User className="w-4 h-4 text-[#ff007a]" />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center space-x-2">
+                              <p className="text-sm font-medium text-[#1f2937] truncate">
+                                {account.full_name}
+                              </p>
+                              {account.isDatabase && (
+                                <span className="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium bg-[#ff007a]/10 text-[#ff007a]">
+                                  DB
+                                </span>
+                              )}
+                            </div>
+                            <p className="text-xs text-[#6d7079] truncate">
+                              {account.email}
+                            </p>
+                            <div className="flex items-center space-x-2 mt-1">
+                              <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-[#dfe2ec] text-[#6d7079]">
+                                {account.role}
+                              </span>
+                              <span className="text-xs text-[#9aa1b3]">
+                                {account.description}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          {showDemoPasswords && (
+                            <div className="flex items-center space-x-1 bg-[#1f2937] px-2 py-1 rounded-lg">
+                              <Key className="w-3 h-3 text-[#9aa1b3]" />
+                              <span className="text-xs text-[#eef0f8] font-mono">
+                                {account.password}
+                              </span>
+                            </div>
+                          )}
+                          <div className="opacity-0 group-hover:opacity-100 transition-opacity">
+                            <div className="w-6 h-6 rounded-full bg-[#ff007a] flex items-center justify-center">
+                              <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                              </svg>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-6">
+                  <p className="text-sm text-[#9aa1b3]">
+                    No demo accounts available
+                  </p>
+                </div>
+              )}
+            </div>
           </div>
 
           <div className="mt-20 text-sm text-[#6c6f78]">

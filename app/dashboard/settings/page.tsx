@@ -150,10 +150,18 @@ export default function SettingsPage() {
         <div className="mb-8 sm:mb-12">
           <Tabs defaultValue="general" className="space-y-8 sm:space-y-12">
             <TabsList className="border border-black bg-white inline-flex p-1 gap-1 overflow-x-auto w-full h-auto rounded-lg shadow-sm">
-              <TabsTrigger value="general" className="px-4 sm:px-8 py-3 sm:py-4 border-r border-gray-200 hover:bg-gray-50 transition-all rounded-md data-[state=active]:bg-black data-[state=active]:text-white data-[state=active]:shadow-md text-sm sm:text-base font-medium">Umum</TabsTrigger>
-              <TabsTrigger value="borrowing" className="px-4 sm:px-8 py-3 sm:py-4 border-r border-gray-200 hover:bg-gray-50 transition-all rounded-md data-[state=active]:bg-black data-[state=active]:text-white data-[state=active]:shadow-md text-sm sm:text-base font-medium">Peminjaman</TabsTrigger>
-              <TabsTrigger value="notifications" className="px-4 sm:px-8 py-3 sm:py-4 border-r border-gray-200 hover:bg-gray-50 transition-all rounded-md data-[state=active]:bg-black data-[state=active]:text-white data-[state=active]:shadow-md text-sm sm:text-base font-medium">Notifikasi</TabsTrigger>
-              <TabsTrigger value="system" className="px-4 sm:px-8 py-3 sm:py-4 hover:bg-gray-50 transition-all rounded-md data-[state=active]:bg-black data-[state=active]:text-white data-[state=active]:shadow-md text-sm sm:text-base font-medium">Sistem</TabsTrigger>
+              <TabsTrigger value="general" className="px-4 sm:px-8 py-3 sm:py-4 border-r border-[#f1d6e6]/60 transition-all rounded-xl text-sm sm:text-base font-semibold hover:bg-[#ffe4f2] data-[state=active]:bg-[#ff007a] data-[state=active]:text-white data-[state=active]:shadow-[0_18px_35px_rgba(255,0,122,0.25)]">
+                Umum
+              </TabsTrigger>
+              <TabsTrigger value="borrowing" className="px-4 sm:px-8 py-3 sm:py-4 border-r border-[#f1d6e6]/60 transition-all rounded-xl text-sm sm:text-base font-semibold hover:bg-[#ffe4f2] data-[state=active]:bg-[#ff007a] data-[state=active]:text-white data-[state=active]:shadow-[0_18px_35px_rgba(255,0,122,0.25)]">
+                Peminjaman
+              </TabsTrigger>
+              <TabsTrigger value="notifications" className="px-4 sm:px-8 py-3 sm:py-4 border-r border-[#f1d6e6]/60 transition-all rounded-xl text-sm sm:text-base font-semibold hover:bg-[#ffe4f2] data-[state=active]:bg-[#ff007a] data-[state=active]:text-white data-[state=active]:shadow-[0_18px_35px_rgba(255,0,122,0.25)]">
+                Notifikasi
+              </TabsTrigger>
+              <TabsTrigger value="system" className="px-4 sm:px-8 py-3 sm:py-4 transition-all rounded-xl text-sm sm:text-base font-semibold hover:bg-[#ffe4f2] data-[state=active]:bg-[#ff007a] data-[state=active]:text-white data-[state=active]:shadow-[0_18px_35px_rgba(255,0,122,0.25)]">
+                Sistem
+              </TabsTrigger>
             </TabsList>
 
             <TabsContent value="general" className="space-y-8 sm:space-y-10">
@@ -221,7 +229,7 @@ export default function SettingsPage() {
                       className="border-black focus:ring-black h-12 sm:h-14 text-sm sm:text-base px-4 sm:px-5"
                       placeholder="Masukkan jumlah hari maksimum"
                     />
-                    <p className="text-sm sm:text-base text-gray-600 font-medium bg-gray-50 p-3 sm:p-4 rounded-lg">
+                    <p className="rounded-[18px] bg-[#f3f4fb] p-3 text-sm font-medium text-[#6d7079] sm:p-4 sm:text-base">
                       Jumlah maksimum hari pengguna dapat meminjam peralatan
                     </p>
                   </div>

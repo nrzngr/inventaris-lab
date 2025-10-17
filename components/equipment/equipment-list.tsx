@@ -220,7 +220,7 @@ export function EquipmentList() {
   }
 
   return (
-    <div className="space-y-6 lg:space-y-8">
+    <div className="space-y-4 sm:space-y-6 lg:space-y-8">
       <div className="lg:hidden flex justify-end">
         <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
           <DialogTrigger asChild>
@@ -234,9 +234,9 @@ export function EquipmentList() {
               Add Equipment
             </ModernButton>
           </DialogTrigger>
-          <DialogContent className="border-2 border-black rounded-2xl mx-4 max-h-[90vh] overflow-y-auto">
+          <DialogContent className="mx-4 max-h-[90vh] overflow-y-auto">
             <DialogHeader>
-              <DialogTitle className="text-xl font-black">Tambah Peralatan Baru</DialogTitle>
+              <DialogTitle>Tambah Peralatan Baru</DialogTitle>
             </DialogHeader>
             <div className="py-2">
               <EquipmentForm
@@ -257,11 +257,11 @@ export function EquipmentList() {
       />
 
     {isLoading ? (
-        <div className="bg-white rounded-2xl border-2 border-black p-6 lg:p-8">
+        <div className="bg-white rounded-2xl border-2 border-[#dfe2ec] p-4 sm:p-6 lg:p-8">
           <TableSkeleton rows={8} columns={7} />
         </div>
       ) : (
-        <div className="bg-white rounded-2xl border-2 border-black overflow-hidden">
+        <div className="bg-white rounded-2xl border-2 border-[#dfe2ec] overflow-hidden">
           {equipment?.length === 0 ? (
             <div className="text-center py-12 lg:py-16 px-6">
               <Package className="mx-auto w-16 h-16 lg:w-20 lg:h-20 mb-6 text-gray-400" />
@@ -291,7 +291,7 @@ export function EquipmentList() {
               </ModernButton>
             </div>
           ) : (
-            <div className="divide-y divide-black">
+            <div className="divide-y divide-[#dfe2ec]">
               {equipment?.map((item) => (
                 <div key={item.id} className="p-4 lg:p-6 hover:bg-gray-50 transition-colors">
                   <div className="flex flex-col lg:flex-row lg:justify-between lg:items-start gap-3 lg:gap-4 mb-4 lg:mb-6">
@@ -310,14 +310,14 @@ export function EquipmentList() {
                                     <div className="flex gap-1 lg:gap-2">
                       <button
                         onClick={() => setViewingEquipment(item)}
-                        className="border border-black p-2 lg:p-2.5 hover:bg-black hover:text-white transition-none rounded-lg"
+                        className="border border-[#dfe2ec] p-2 lg:p-2.5 hover:border-[#ff007a] hover:bg-[#ffe4f2] hover:text-[#ff007a] transition-all rounded-lg"
                         title="View details"
                       >
                         <Eye className="w-4 h-4 lg:w-5 lg:h-5" />
                       </button>
                       <button
                         onClick={() => setEditingEquipment(item)}
-                        className="border border-black p-2 lg:p-2.5 hover:bg-black hover:text-white transition-none rounded-lg"
+                        className="border border-[#dfe2ec] p-2 lg:p-2.5 hover:border-[#ff007a] hover:bg-[#ffe4f2] hover:text-[#ff007a] transition-all rounded-lg"
                         title="Edit equipment"
                       >
                         <Edit className="w-4 h-4 lg:w-5 lg:h-5" />
@@ -325,7 +325,7 @@ export function EquipmentList() {
                       <button
                         onClick={() => handleDelete(item.id)}
                         disabled={deleteMutation.isPending}
-                        className="border border-black p-2 lg:p-2.5 hover:bg-red-600 hover:text-white hover:border-red-600 transition-none rounded-lg"
+                        className="border border-[#dfe2ec] p-2 lg:p-2.5 hover:border-red-600 hover:bg-red-50 hover:text-red-600 transition-all rounded-lg"
                         title="Delete equipment"
                       >
                         <Trash2 className="w-4 h-4 lg:w-5 lg:h-5" />
@@ -366,9 +366,9 @@ export function EquipmentList() {
 
       {editingEquipment && (
         <Dialog open={!!editingEquipment} onOpenChange={() => setEditingEquipment(null)}>
-          <DialogContent className="sm:max-w-[600px] border-2 border-black rounded-2xl mx-4 max-h-[90vh] overflow-y-auto">
-            <DialogHeader className="pb-2">
-              <DialogTitle className="text-xl font-bold">Ubah Peralatan</DialogTitle>
+          <DialogContent className="sm:max-w-[600px] mx-4 max-h-[90vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle>Ubah Peralatan</DialogTitle>
             </DialogHeader>
             <div className="py-2">
               <EquipmentForm
@@ -385,9 +385,9 @@ export function EquipmentList() {
 
       {viewingEquipment && (
         <Dialog open={!!viewingEquipment} onOpenChange={() => setViewingEquipment(null)}>
-          <DialogContent className="sm:max-w-[600px] border-2 border-black rounded-2xl mx-4 max-h-[90vh] overflow-y-auto">
-            <DialogHeader className="pb-2">
-              <DialogTitle className="text-xl font-bold">Detail Peralatan</DialogTitle>
+          <DialogContent className="sm:max-w-[600px] mx-4 max-h-[90vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle>Detail Peralatan</DialogTitle>
             </DialogHeader>
             <div className="space-y-6 py-2">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
@@ -427,7 +427,7 @@ export function EquipmentList() {
               {viewingEquipment.image_url && (
                 <div>
                   <div className="text-sm font-medium mb-2 text-gray-600 uppercase tracking-wider">Gambar</div>
-                  <div className="border border-black rounded-xl overflow-hidden">
+                  <div className="border border-[#dfe2ec] rounded-xl overflow-hidden">
                     <img
                       src={viewingEquipment.image_url}
                       alt={viewingEquipment.name}
@@ -442,14 +442,16 @@ export function EquipmentList() {
       )}
 
       {totalPages > 1 && (
-        <div className="mt-6">
-          <TablePagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            totalItems={totalCount}
-            itemsPerPage={pageSize}
-            onPageChange={setCurrentPage}
-          />
+        <div className="mt-4 sm:mt-6">
+          <div className="flex justify-center">
+            <TablePagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              totalItems={totalCount}
+              itemsPerPage={pageSize}
+              onPageChange={setCurrentPage}
+            />
+          </div>
         </div>
       )}
     </div>

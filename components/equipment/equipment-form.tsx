@@ -145,7 +145,7 @@ export function EquipmentForm({ equipment, onSuccess }: EquipmentFormProps) {
           {...register('description')}
           placeholder="Masukkan deskripsi peralatan"
           rows={3}
-          className="resize-none"
+          variant="filled"
         />
       </div>
 

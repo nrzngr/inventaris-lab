@@ -213,7 +213,7 @@ export default function AnalyticsPage() {
               <select
                 value={timeRange}
                 onChange={(e) => setTimeRange(e.target.value)}
-                className="w-full sm:flex-1 px-3 sm:px-4 py-2 sm:py-3 border border-black focus:ring-0 focus:border-black h-10 sm:h-12 text-sm bg-white hover:bg-gray-50 transition-colors"
+                className="w-full sm:flex-1 px-3 sm:px-4 py-2 sm:py-3 border border-[#dfe2ec] focus:ring-[rgba(255,0,122,0.2)] focus:border-[#ff007a] h-10 sm:h-12 text-sm bg-white hover:bg-[#f3f4fb] transition-colors"
               >
                 <option value="7days">7 Hari Terakhir</option>
                 <option value="30days">30 Hari Terakhir</option>
@@ -232,7 +232,7 @@ export default function AnalyticsPage() {
           </div>
         </ModernCard>
 
-        <div className="grid gap-6 sm:gap-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 mb-8 sm:mb-12">
+        <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 mb-6 sm:mb-8">
           <ModernCard variant="default" hover className="stats-card p-6 sm:p-8">
             <div className="flex items-center justify-between mb-4 sm:mb-6">
               <span className="text-sm font-bold text-gray-600 uppercase tracking-wider">Total Pengguna</span>
@@ -346,7 +346,7 @@ export default function AnalyticsPage() {
           <RealtimeAnalytics />
 
           <ModernCard variant="default" className="overflow-hidden">
-            <div className="p-4 sm:p-6 border-b border-black bg-gray-50">
+            <div className="border-b border-[#f1d6e6]/60 bg-[#f3f4fb] p-4 sm:p-6">
               <div className="flex items-center gap-4">
                 <div className="p-3 bg-green-100 rounded-xl">
                   <TrendingUp className="w-5 h-5 sm:w-6 sm:h-6 text-green-600" />

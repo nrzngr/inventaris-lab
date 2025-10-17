@@ -2,18 +2,16 @@
 
 import { Suspense } from 'react'
 import { MobileCheckout } from '@/components/mobile/mobile-checkout'
-import { ArrowLeft } from 'lucide-react'
-import { ModernButton } from '@/components/ui/modern-button'
 import { useRouter } from 'next/navigation'
 
 export default function CheckoutPage() {
   const router = useRouter()
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen page-gradient">
       <Suspense fallback={
-        <div className="flex items-center justify-center h-64">
-          <div className="animate-spin w-6 h-6 border-2 border-blue-600 border-t-transparent rounded-full"></div>
+        <div className="flex h-64 items-center justify-center">
+          <div className="h-6 w-6 animate-spin rounded-full border-2 border-[#ff007a] border-t-transparent" />
         </div>
       }>
         <MobileCheckout onClose={() => router.back()} />
