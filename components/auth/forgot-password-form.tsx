@@ -1,10 +1,13 @@
 'use client'
 
 import { useState } from 'react'
-import { useCustomAuth } from '@/components/auth/custom-auth-provider'
+import Image from 'next/image'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { AlertTriangle } from 'lucide-react'
-import Link from 'next/link'
+
+import { LoginAccent } from './login-accent'
+import { useCustomAuth } from '@/components/auth/custom-auth-provider'
 
 interface ForgotPasswordFormProps {
   onBack?: () => void
@@ -42,65 +45,65 @@ export function ForgotPasswordForm({ onBack, onSuccess }: ForgotPasswordFormProp
   }
 
   return (
-    <div className="min-h-screen flex bg-white">
-      {/* Left Column - Form */}
-      <div className="flex-1 flex items-center justify-center p-8 lg:p-12">
-        <div className="w-full max-w-md">
-          {/* Logo */}
-          <div className="flex items-center gap-2 mb-8">
-            <div className="w-10 h-10 bg-pink-500 rounded-lg flex items-center justify-center">
-              <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"/>
-              </svg>
-            </div>
-            <span className="text-2xl font-bold text-gray-900">Labbo</span>
-          </div>
+    <div className="flex min-h-screen w-full flex-col bg-[#f8f7fb] text-[#111827] lg:flex-row">
+      <div className="flex flex-1 flex-col px-8 py-12 sm:px-16 lg:px-20 xl:px-28">
+        <Link href="/" className="flex w-fit items-center" aria-label="Labbo home">
+          <Image
+            src="/logo.svg"
+            alt="Labbo"
+            width={160}
+            height={48}
+            priority
+            className="h-10 w-auto"
+          />
+        </Link>
 
-          {/* Headline */}
-          <div className="mb-8">
-            <h1 className="text-4xl font-bold text-gray-900 mb-2">Forgot your Password?</h1>
-            <p className="text-lg text-gray-600">Don't worry just enter your email below and we'll send you a link to reset it.</p>
-          </div>
+        <div className="mt-16 flex flex-1 flex-col sm:mt-24">
+          <div className="max-w-[420px]">
+            <h1 className="text-[40px] font-semibold leading-tight text-[#111827] sm:text-[46px]">
+              Forgot your password?
+            </h1>
+            <p className="mt-4 text-[17px] text-[#6d7079]">
+              Don&apos;t worry just enter your email below and we&apos;ll send you a link to reset it.
+            </p>
 
-          {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Email Input */}
-            <div>
-              <input
-                type="email"
-                placeholder="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
-                required
-                disabled={isLoading}
-              />
-            </div>
-
-            {/* Error Message */}
-            {error && (
-              <div className="flex items-center gap-2 p-3 bg-red-50 border border-red-200 rounded-lg">
-                <AlertTriangle className="w-4 h-4 text-red-600 flex-shrink-0" />
-                <span className="text-sm text-red-700">{error}</span>
+            <form onSubmit={handleSubmit} className="mt-12 space-y-6">
+              <div>
+                <input
+                  type="email"
+                  placeholder="Email"
+                  value={email}
+                  onChange={(event) => setEmail(event.target.value)}
+                  className="w-full rounded-[16px] border border-[#e6e7eb] bg-white px-5 py-4 text-[15px] text-[#111827] shadow-sm outline-none transition focus:border-[#ff007a] focus:ring-4 focus:ring-[rgba(255,0,122,0.16)] placeholder:text-[#b1b4bd]"
+                  required
+                  disabled={isLoading}
+                />
               </div>
-            )}
 
-            {/* Reset Password Button */}
-            <button
-              type="submit"
-              disabled={isLoading || !email}
-              className="w-full bg-pink-500 text-white py-3 rounded-lg font-medium hover:bg-pink-600 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {isLoading ? 'Sending...' : 'Reset Password'}
-            </button>
-          </form>
+              {error && (
+                <div className="flex items-start gap-2 rounded-[14px] border border-[#f9a8d4] bg-[#ffe8ef] px-4 py-3 text-sm text-[#b4235d]">
+                  <AlertTriangle className="mt-0.5 h-4 w-4 flex-shrink-0" />
+                  <span>{error}</span>
+                </div>
+              )}
 
-          {/* Sign In Link */}
-          <div className="mt-6 text-center">
-            <span className="text-gray-600">Remember your password? </span>
+              <div className="pt-1">
+                <button
+                  type="submit"
+                  disabled={isLoading || !email}
+                  className="inline-flex w-full items-center justify-center rounded-[14px] bg-[#ff007a] px-12 py-3 text-base font-semibold text-white shadow-[0_18px_36px_rgba(255,0,122,0.3)] transition hover:bg-[#e6006f] focus:outline-none focus:ring-2 focus:ring-[#ff007a] focus:ring-offset-2 focus:ring-offset-[#f8f7fb] disabled:cursor-not-allowed disabled:opacity-70"
+                >
+                  {isLoading ? 'Sending...' : 'Reset Password'}
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <div className="mt-16 text-sm text-[#6c6f78]">
+            Remember your password?{' '}
             <Link
               href="/"
-              className="text-pink-500 hover:text-pink-600 font-medium transition-colors"
+              className="font-medium text-[#ff007a] transition hover:text-[#e6006f]"
             >
               Sign In
             </Link>
@@ -108,28 +111,9 @@ export function ForgotPasswordForm({ onBack, onSuccess }: ForgotPasswordFormProp
         </div>
       </div>
 
-      {/* Right Column - Decorative Panel */}
-      <div className="hidden lg:flex lg:flex-1 bg-pink-500 items-center justify-center p-8">
-        <div className="relative w-full h-full max-w-2xl max-h-[600px]">
-          {/* Abstract Decorative Shapes */}
-          <svg className="w-full h-full" viewBox="0 0 400 600" fill="none">
-            {/* Curved Lines */}
-            <path d="M50 300 Q100 200 150 250 T250 200" stroke="white" strokeWidth="3" opacity="0.3"/>
-            <path d="M100 400 Q200 350 250 400 T350 350" stroke="white" strokeWidth="2" opacity="0.2"/>
-            <path d="M80 180 Q150 120 200 160 T300 140" stroke="white" strokeWidth="2.5" opacity="0.25"/>
-            <path d="M120 500 Q180 450 220 480 T280 460" stroke="white" strokeWidth="2" opacity="0.2"/>
-
-            {/* Geometric Shapes */}
-            <circle cx="80" cy="150" r="40" fill="white" opacity="0.1"/>
-            <rect x="300" y="100" width="60" height="60" fill="white" opacity="0.1" transform="rotate(45 330 130)"/>
-            <polygon points="200,450 250,500 150,500" fill="white" opacity="0.1"/>
-            <ellipse cx="250" cy="300" rx="35" ry="20" fill="white" opacity="0.06"/>
-
-            {/* Additional decorative elements */}
-            <circle cx="320" cy="400" r="25" fill="white" opacity="0.08"/>
-            <rect x="50" y="500" width="40" height="40" fill="white" opacity="0.08" transform="rotate(30 70 520)"/>
-            <polygon points="150,250 180,200 120,200" fill="white" opacity="0.05"/>
-          </svg>
+      <div className="relative hidden items-center justify-center bg-[#f8f7fb] lg:flex lg:w-[48%] xl:w-[52%]">
+        <div className="relative w-full max-w-[700px] rounded-[72px] bg-[#ff007a] shadow-[0_40px_90px_rgba(255,0,122,0.32)] aspect-[442/550] overflow-hidden">
+          <LoginAccent className="absolute inset-0 scale-[1.04]" aria-hidden="true" />
         </div>
       </div>
     </div>

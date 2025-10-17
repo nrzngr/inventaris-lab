@@ -1,8 +1,11 @@
 'use client'
 
 import { useState } from 'react'
-import { useSearchParams } from 'next/navigation'
+import Image from 'next/image'
 import Link from 'next/link'
+import { useSearchParams } from 'next/navigation'
+
+import { LinkSendAccent } from './link-send-accent'
 
 export function LinkSendForm() {
   const searchParams = useSearchParams()
@@ -15,7 +18,6 @@ export function LinkSendForm() {
     setResendMessage('')
 
     try {
-      // Simulate API call to resend link
       await new Promise(resolve => setTimeout(resolve, 1500))
       setResendMessage('Link has been resent to your email!')
     } catch (error) {
@@ -26,82 +28,65 @@ export function LinkSendForm() {
   }
 
   return (
-    <div className="min-h-screen flex bg-white">
-      {/* Left Column - Content */}
-      <div className="flex-1 flex items-center justify-center p-8 lg:p-12">
-        <div className="w-full max-w-md">
-          {/* Logo */}
-          <div className="flex items-center gap-2 mb-8">
-            <div className="w-10 h-10 bg-pink-500 rounded-lg flex items-center justify-center">
-              <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"/>
-              </svg>
-            </div>
-            <span className="text-2xl font-bold text-gray-900">Labbo</span>
-          </div>
+    <div className="flex min-h-screen w-full flex-col bg-[#f8f7fb] text-[#111827] lg:flex-row">
+      <div className="flex flex-1 flex-col px-8 py-12 sm:px-16 lg:px-20 xl:px-28">
+        <Link href="/" className="flex w-fit items-center" aria-label="Labbo home">
+          <Image
+            src="/logo.svg"
+            alt="Labbo"
+            width={160}
+            height={48}
+            priority
+            className="h-10 w-auto"
+          />
+        </Link>
 
-          {/* Status Indicator */}
-          <div className="mb-6">
-            <div className="w-16 h-16 bg-pink-500 rounded-full flex items-center justify-center">
-              <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="mt-16 flex flex-1 flex-col sm:mt-24">
+          <div className="max-w-[420px]">
+            <div className="mb-10 flex h-20 w-20 items-center justify-center rounded-full bg-[#ff007a] shadow-[0_18px_36px_rgba(255,0,122,0.35)]">
+              <svg className="h-10 w-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
               </svg>
             </div>
-          </div>
 
-          {/* Heading */}
-          <div className="mb-6">
-            <h1 className="text-3xl font-bold text-gray-900 mb-4">Reset link sent!</h1>
-            <p className="text-lg text-gray-600 leading-relaxed">
-              Please check your inbox and follow the instructions to create a new password.
+            <h1 className="text-[40px] font-semibold leading-tight text-[#111827] sm:text-[46px]">
+              Reset link sent!
+            </h1>
+            <p className="mt-4 text-[17px] text-[#6d7079]">
+              Check your inbox and follow the instructions to create a new password.
             </p>
 
-            {email && (
-              <p className="text-sm text-gray-500 mt-2">
-                We've sent the link to: <span className="font-medium text-gray-700">{email}</span>
-              </p>
-            )}
-          </div>
-
-          {/* Resend Section */}
-          <div className="space-y-4">
-            <div className="flex items-center gap-2 text-gray-600">
-              <span>Didn't receive the email?</span>
+            <div className="mt-12 text-sm text-[#6d7079]">
+              Didn&apos;t receive the email?{' '}
               <button
                 onClick={handleResendLink}
                 disabled={isResending}
-                className="text-pink-500 hover:text-pink-600 font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="font-medium text-[#ff007a] transition hover:text-[#e6006f] disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {isResending ? 'Sending...' : 'Resend link'}
               </button>
             </div>
 
             {resendMessage && (
-              <div className={`p-3 rounded-lg text-sm ${
-                resendMessage.includes('failed')
-                  ? 'bg-red-50 text-red-700 border border-red-200'
-                  : 'bg-green-50 text-green-700 border border-green-200'
-              }`}>
+              <div
+                className={`mt-5 inline-flex rounded-[12px] px-4 py-3 text-sm ${
+                  resendMessage.toLowerCase().includes('fail')
+                    ? 'border border-[#f9a8d4] bg-[#ffe8ef] text-[#b4235d]'
+                    : 'border border-[#b7f0d1] bg-[#e9fdf1] text-[#10753f]'
+                }`}
+              >
                 {resendMessage}
               </div>
             )}
-
-            {/* Additional Help Text */}
-            <div className="text-sm text-gray-500 space-y-1">
-              <p>• Check your spam folder</p>
-              <p>• Make sure the email address is correct</p>
-              <p>• Wait a few minutes for delivery</p>
-            </div>
           </div>
 
-          {/* Back to Sign In */}
-          <div className="mt-8 pt-6 border-t border-gray-200">
+          <div className="mt-16 text-sm text-[#6c6f78]">
             <Link
               href="/"
-              className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
+              className="inline-flex items-center gap-2 font-medium text-[#ff007a] transition hover:text-[#e6006f]"
             >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
               </svg>
               Back to Sign In
             </Link>
@@ -109,33 +94,9 @@ export function LinkSendForm() {
         </div>
       </div>
 
-      {/* Right Column - Decorative Panel */}
-      <div className="hidden lg:flex lg:flex-1 bg-pink-500 items-center justify-center p-8">
-        <div className="relative w-full h-full max-w-2xl max-h-[600px]">
-          {/* Abstract Decorative Shapes */}
-          <svg className="w-full h-full" viewBox="0 0 400 600" fill="none">
-            {/* Curved Lines */}
-            <path d="M50 300 Q100 200 150 250 T250 200" stroke="white" strokeWidth="3" opacity="0.3"/>
-            <path d="M100 400 Q200 350 250 400 T350 350" stroke="white" strokeWidth="2" opacity="0.2"/>
-            <path d="M80 180 Q150 120 200 160 T300 140" stroke="white" strokeWidth="2.5" opacity="0.25"/>
-            <path d="M120 500 Q180 450 220 480 T280 460" stroke="white" strokeWidth="2" opacity="0.2"/>
-
-            {/* Diagonal Line */}
-            <path d="M300 50 L100 500" stroke="white" strokeWidth="2" opacity="0.15"/>
-
-            {/* Curved Top Edge */}
-            <path d="M50 100 Q200 50 350 100" stroke="white" strokeWidth="4" opacity="0.2"/>
-
-            {/* Geometric Shapes */}
-            <circle cx="80" cy="150" r="40" fill="white" opacity="0.1"/>
-            <rect x="300" y="100" width="60" height="60" fill="white" opacity="0.1" transform="rotate(45 330 130)"/>
-            <polygon points="200,450 250,500 150,500" fill="white" opacity="0.1"/>
-
-            {/* Additional decorative elements */}
-            <circle cx="320" cy="400" r="25" fill="white" opacity="0.08"/>
-            <rect x="50" y="500" width="40" height="40" fill="white" opacity="0.08" transform="rotate(30 70 520)"/>
-            <ellipse cx="250" cy="300" rx="35" ry="20" fill="white" opacity="0.06"/>
-          </svg>
+      <div className="relative hidden items-center justify-center bg-[#f8f7fb] lg:flex lg:w-[48%] xl:w-[52%]">
+        <div className="relative w-full max-w-[700px] rounded-[72px] bg-[#ff007a] shadow-[0_40px_90px_rgba(255,0,122,0.32)] aspect-[442/550] overflow-hidden">
+          <LinkSendAccent className="absolute inset-0 scale-[1.04]" aria-hidden="true" />
         </div>
       </div>
     </div>

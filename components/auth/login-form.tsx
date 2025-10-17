@@ -1,13 +1,9 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useCustomAuth } from './custom-auth-provider'
 import { useRouter } from 'next/navigation'
-import { ModernCard } from '@/components/ui/modern-card'
-import { ModernButton } from '@/components/ui/modern-button'
-import { ModernInput } from '@/components/ui/modern-input'
-import { ModernBadge } from '@/components/ui/modern-badge'
-import { Eye, EyeOff, Mail, Lock, AlertTriangle, CheckCircle, Users, RefreshCw } from 'lucide-react'
+import { AlertTriangle } from 'lucide-react'
 import Link from 'next/link'
 
 export function useAuth() {
@@ -24,8 +20,6 @@ export function LoginForm() {
   const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [demoAccounts, setDemoAccounts] = useState<any[]>([])
-  const [isLoadingDemo, setIsLoadingDemo] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -63,247 +57,143 @@ export function LoginForm() {
     }
   }
 
-  const getTempPassword = (email: string) => {
-    if (typeof window !== 'undefined') {
-      return localStorage.getItem(`tempPassword_${email}`)
-    }
-    return null
-  }
-
-  // Fetch demo accounts from API
-  const fetchDemoAccounts = async () => {
-    setIsLoadingDemo(true)
-    try {
-      const response = await fetch('/api/demo-accounts')
-      if (response.ok) {
-        const data = await response.json()
-        setDemoAccounts(data.demoAccounts || [])
-      } else {
-        console.error('Failed to fetch demo accounts')
-        // Fallback to default demo accounts
-        setDemoAccounts(getDefaultDemoAccounts())
-      }
-    } catch (error) {
-      console.error('Error fetching demo accounts:', error)
-      // Fallback to default demo accounts
-      setDemoAccounts(getDefaultDemoAccounts())
-    } finally {
-      setIsLoadingDemo(false)
-    }
-  }
-
-  const getDefaultDemoAccounts = () => [
-    {
-      email: 'admin@example.com',
-      password: getTempPassword('admin@example.com') || 'admin123',
-      role: 'Admin',
-      description: 'Akses penuh sistem',
-      full_name: 'Demo Admin',
-      isDatabase: false
-    },
-    {
-      email: 'student@example.com',
-      password: getTempPassword('student@example.com') || 'student123',
-      role: 'Student',
-      description: 'Mahasiswa biasa',
-      full_name: 'Demo Student',
-      isDatabase: false
-    },
-    {
-      email: 'lecturer@example.com',
-      password: getTempPassword('lecturer@example.com') || 'lecturer123',
-      role: 'Lecturer',
-      description: 'Dosen pengajar',
-      full_name: 'Demo Lecturer',
-      isDatabase: false
-    },
-    {
-      email: 'labstaff@example.com',
-      password: getTempPassword('labstaff@example.com') || 'labstaff123',
-      role: 'Lab Staff',
-      description: 'Staff laboratorium',
-      full_name: 'Demo Lab Staff',
-      isDatabase: false
-    }
-  ]
-
-  // Fetch demo accounts on component mount
-  useEffect(() => {
-    fetchDemoAccounts()
-  }, [])
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
-      <div className="w-full max-w-md">
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-black rounded-xl mb-4">
-            <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-            </svg>
-          </div>
-          <h1 className="text-3xl font-black text-gray-900 mb-2">Lab Inventory</h1>
-          <p className="text-gray-600 font-medium">Sistem Manajemen Peralatan Laboratorium</p>
-        </div>
+    <div
+      className="min-h-screen bg-[#F9F9F9]"
+      style={{
+        fontFamily: 'Satoshi, system-ui, -apple-system, sans-serif'
+      }}
+    >
+      <div className="mx-auto flex min-h-screen w-full max-w-6xl flex-col lg:h-screen lg:flex-row">
+        <div className="flex flex-1 items-center justify-center px-6 py-12 sm:px-10 lg:px-16">
+          <div className="w-full max-w-md">
+            <div className="flex items-center justify-center lg:justify-start">
+              <img
+                src="/logo-icon.svg"
+                alt="Labbo"
+                className="h-12 w-auto"
+              />
+              <img
+                src="/logo.svg"
+                alt="Labbo"
+                className="ml-6 h-10 w-auto"
+              />
+            </div>
 
-        <ModernCard variant="elevated" padding="lg" className="mb-6">
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
-              <label className="block text-sm font-bold text-gray-700 uppercase tracking-wider mb-2">
-                Email
-              </label>
+            <div className="mt-10 text-center lg:text-left">
+              <h1 className="text-[28px] font-bold leading-tight text-[#222222] lg:text-[32px]">
+                Back to work, genius!
+              </h1>
+              <p className="mt-4 text-[18px] leading-relaxed text-[#444444]">
+                Let&apos;s make some science happen
+              </p>
+            </div>
+
+            <form onSubmit={handleSubmit} className="mt-10 space-y-6">
               <div className="relative">
-                <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-                <ModernInput
+                <input
                   type="email"
                   name="email"
                   value={formData.email}
                   onChange={handleInputChange}
-                  placeholder="nama@email.com"
-                  className="pl-10"
+                  placeholder="Email"
+                  className="w-full rounded-xl border border-[#D5D5D5] bg-white px-5 py-3 text-[16px] text-[#222222] placeholder-[#9E9E9E] outline-none transition-all hover:border-[#FF66A3] focus:border-[#FF66A3] focus:ring-2 focus:ring-[#FFB3D3]"
                   required
                   disabled={isSubmitting}
                 />
               </div>
-            </div>
 
-            <div>
-              <label className="block text-sm font-bold text-gray-700 uppercase tracking-wider mb-2">
-                Password
-              </label>
               <div className="relative">
-                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-                <ModernInput
+                <input
                   type={showPassword ? 'text' : 'password'}
                   name="password"
                   value={formData.password}
                   onChange={handleInputChange}
-                  placeholder="Masukkan password"
-                  className="pl-10 pr-10"
+                  placeholder="Password"
+                  className="w-full rounded-xl border border-[#D5D5D5] bg-white px-5 py-3 pr-12 text-[16px] text-[#222222] placeholder-[#9E9E9E] outline-none transition-all hover:border-[#FF66A3] focus:border-[#FF66A3] focus:ring-2 focus:ring-[#FFB3D3]"
                   required
                   disabled={isSubmitting}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-[#9E9E9E] transition-colors hover:text-[#222222] focus-visible:text-[#222222]"
                   disabled={isSubmitting}
                 >
-                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  {showPassword ? (
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                      <path d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/>
+                    </svg>
+                  ) : (
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                      <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                      <path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                    </svg>
+                  )}
                 </button>
               </div>
-            </div>
 
-            {error && (
-              <div className="flex items-center gap-2 p-3 bg-red-50 border border-red-200 rounded-lg">
-                <AlertTriangle className="w-4 h-4 text-red-600 flex-shrink-0" />
-                <span className="text-sm text-red-700">{error}</span>
-              </div>
-            )}
+              {error && (
+                <div className="flex items-center gap-2 rounded-xl border border-red-200 bg-red-50 px-4 py-3">
+                  <AlertTriangle className="h-4 w-4 flex-shrink-0 text-red-600" />
+                  <span className="text-sm text-red-700">{error}</span>
+                </div>
+              )}
 
-            <ModernButton
-              type="submit"
-              variant="default"
-              size="lg"
-              loading={isSubmitting}
-              disabled={isSubmitting || !formData.email || !formData.password}
-              className="w-full"
-            >
-              {isSubmitting ? 'Masuk...' : 'Masuk'}
-            </ModernButton>
+              <button
+                type="submit"
+                disabled={isSubmitting || !formData.email || !formData.password}
+                className="flex w-full items-center justify-center rounded-xl bg-[#FD1278] px-6 py-3.5 text-[16px] font-semibold text-white transition-colors hover:bg-[#E10E68] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#FFB3D3] disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                {isSubmitting ? (
+                  <>
+                    <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                    Sign In
+                  </>
+                ) : (
+                  'Sign In'
+                )}
+              </button>
+            </form>
 
-            <div className="text-center">
+            <div className="mt-6 text-center lg:text-right">
               <Link
                 href="/forgot-password"
-                className="text-sm text-blue-600 hover:text-blue-800 hover:underline transition-colors"
+                className="text-[16px] font-medium text-[#333333] transition-colors hover:text-[#FD1278] hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#FFB3D3]"
               >
-                Lupa Password?
+                Forgot Password?
               </Link>
             </div>
-          </form>
-        </ModernCard>
 
-        <ModernCard variant="default" padding="lg">
-          <div className="space-y-4">
-            <div className="text-center">
-              <h3 className="font-bold text-lg mb-2">Akun Demo</h3>
-              <p className="text-sm text-gray-600">Gunakan akun berikut untuk testing:</p>
-              <div className="mt-2 p-2 bg-yellow-50 border border-yellow-200 rounded">
-                <p className="text-xs text-yellow-800">
-                  💡 Mode Development - Login dengan demo account langsung tersedia
-                </p>
-              </div>
-            </div>
-
-            {/* Refresh Button */}
-            <div className="flex items-center justify-between">
-              <span className="text-xs text-gray-500">
-                Latest credentials from database
-                {demoAccounts.filter(acc => acc.isDatabase).length > 0 &&
-                  ` (${demoAccounts.filter(acc => acc.isDatabase).length} from database)`
-                }
-              </span>
-              <button
-                onClick={fetchDemoAccounts}
-                disabled={isLoadingDemo}
-                className="flex items-center gap-1 px-2 py-1 text-xs text-gray-500 hover:text-gray-700 transition-colors disabled:opacity-50"
+            <div className="mt-10 flex items-center justify-center gap-2 text-[16px] text-[#222222] lg:justify-start">
+              <span>Don&apos;t have an account?</span>
+              <Link
+                href="/register"
+                className="font-semibold text-[#FD1278] transition-colors hover:text-[#E10E68] hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#FFB3D3]"
               >
-                <RefreshCw className={`w-3 h-3 ${isLoadingDemo ? 'animate-spin' : ''}`} />
-                Refresh
-              </button>
+                Register
+              </Link>
             </div>
 
-            <div className="space-y-2">
-              {isLoadingDemo ? (
-                <div className="flex items-center justify-center py-4">
-                  <RefreshCw className="w-4 h-4 animate-spin text-gray-400" />
-                  <span className="ml-2 text-xs text-gray-500">Loading demo accounts...</span>
-                </div>
-              ) : (
-                demoAccounts.map((account, index) => (
-                  <div
-                    key={index}
-                    className="p-3 bg-gray-50 rounded-lg border border-gray-200 hover:border-gray-300 transition-colors cursor-pointer"
-                    onClick={() => {
-                      setFormData({
-                        email: account.email,
-                        password: account.password
-                      })
-                      setError('')
-                    }}
-                  >
-                    <div className="flex items-center justify-between mb-1">
-                      <div className="flex items-center gap-2">
-                        <ModernBadge variant="default" size="sm">
-                          {account.role}
-                        </ModernBadge>
-                        {account.isDatabase && (
-                          <span className="px-2 py-0.5 bg-green-100 text-green-700 text-xs rounded-full">
-                            DB
-                          </span>
-                        )}
-                        <span className="font-mono text-sm">{account.email}</span>
-                      </div>
-                      <CheckCircle className="w-4 h-4 text-green-600 opacity-0 hover:opacity-100 transition-opacity" />
-                    </div>
-                    <div className="text-xs text-gray-600">
-                      Password: <span className="font-mono">{account.password}</span>
-                    </div>
-                    <div className="text-xs text-gray-500 mt-1">
-                      {account.description}
-                    </div>
-                  </div>
-                ))
-              )}
-            </div>
-
-            <div className="text-center text-xs text-gray-500 pt-2 border-t">
-              Klik pada akun demo untuk mengisi form secara otomatis
+            <div className="mt-12 flex justify-center lg:hidden">
+              <div className="h-40 w-full max-w-sm rounded-3xl bg-[#FF66A3]/20" />
             </div>
           </div>
-        </ModernCard>
+        </div>
 
-        <div className="text-center text-sm text-gray-600">
-          <p>Belum punya akun? Hubungi administrator laboratorium</p>
+        <div className="relative hidden w-[35%] flex-none items-center justify-center overflow-hidden rounded-l-[48px] lg:flex">
+          <div className="absolute inset-0 bg-gradient-to-br from-[#FF66A3] via-[#FF85B6] to-[#FFC5DD]" />
+          <div className="absolute inset-y-10 inset-x-6 rounded-l-[40px] bg-white/10 backdrop-blur-[2px]" />
+          <div className="relative mx-12 text-white">
+            <div className="rounded-3xl bg-white/10 p-8 shadow-lg backdrop-blur-sm">
+              <p className="text-lg font-semibold tracking-wide">
+                Organized labs start here.
+              </p>
+              <p className="mt-4 text-sm text-white/90">
+                Keep your inventory in sync and get back to what matters most—running experiments.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
